@@ -141,39 +141,39 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	@Override
 	public void createMenuBar()
 	{
-		final Button itemLASAD = new Button("LASAD");
+		//final Button itemLASAD = new Button("LASAD");
 		final Button itemFile = new Button("File");
-		final Button itemEdit = new Button(myConstants.EditMenu());
+		//final Button itemEdit = new Button(myConstants.EditMenu());
 		final Button itemView = new Button("View");
-		final Button itemHelp = new Button("Help")
+		/*final Button itemHelp = new Button("Help")
 		{
 			@Override
 			protected void onClick(ComponentEvent ce)
 			{
 				LASAD_Client.getInstance().createTutorialVideosTab();
 			}
-		};
+		};*/
 
-		Menu lasadMenu = createLASADmenu();
+		//Menu lasadMenu = createLASADmenu();
 		Menu fileMenu = createFileMenu();
-		Menu editMenu = createEditMenu();
+		//Menu editMenu = createEditMenu();
 		Menu viewMenu = createViewMenu();
 
-		itemLASAD.setMenu(lasadMenu);
+		//itemLASAD.setMenu(lasadMenu);
 		itemFile.setMenu(fileMenu);
-		itemEdit.setMenu(editMenu);
+		//itemEdit.setMenu(editMenu);
 		itemView.setMenu(viewMenu);
 
 		/*	Menu was becoming permanently frozen open on double click, so this is a hack to close it instead.  Users should just
 			use a single click. */
-		itemLASAD.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
+		/*itemLASAD.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
 		{
 			@Override
 			public void handleEvent(BaseEvent be)
 			{
 				itemLASAD.hideMenu();
 			}
-		});
+		});*/
 
 		itemFile.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
 		{
@@ -184,14 +184,14 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 			}
 		});
 
-		itemEdit.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
+		/*itemEdit.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
 		{
 			@Override
 			public void handleEvent(BaseEvent be)
 			{
 				itemEdit.hideMenu();
 			}
-		});
+		});*/
 
 		itemView.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
 		{
@@ -202,11 +202,11 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 			}
 		});
 
-		this.add(itemLASAD);
+		//this.add(itemLASAD);
 		this.add(itemFile);
-		this.add(itemEdit);
+		//this.add(itemEdit);
 		this.add(itemView);
-		this.add(itemHelp);
+		//this.add(itemHelp);
 
 		final Button itemGroup = new Button(myConstants.GroupTools());
 		Menu groupMenu = createGroupMenu();
@@ -662,7 +662,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	/*
 	 *	Create the menu for logging out
 	 */
-	protected Menu createLASADmenu()
+	/*protected Menu createLASADmenu()
 	{
 		Menu menu = new Menu();
 
@@ -673,7 +673,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 		menu.add(logOut);
 
 		return menu;
-	}
+	}*/
 
 	/*
 	 *	Create menu for file operations (closing, exporting, etc)
@@ -700,7 +700,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	/*
 	 *	Create the menu for editing (add, delete, autoOrganize, maybe undo if we implement that, etc.)
 	 */
-	protected Menu createEditMenu() {
+	/*protected Menu createEditMenu() {
 		Menu menu = new Menu();
 
 		// TODO Re-implement the undo function (untouched by CMU staff in summer of 2015, to be developed still)
@@ -720,7 +720,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 		menu.add(autoOrganizeItem);
 
 		return menu;
-	}
+	}*/
 
 	/*
 	 *	Create the menu for viewing (all there is right now is centering a contribution)
@@ -728,8 +728,13 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	protected Menu createViewMenu()
 	{
 		Menu menu = new Menu();
+
 		MenuItem centerContribution = createCenterContributionItem();
 		menu.add(centerContribution);
+
+		MenuItem fontSizeItem = createFontSizeItem();
+		menu.add(fontSizeItem);
+
 		return menu;
 	}
 

@@ -347,6 +347,7 @@ public class ActionFactory {
 	    for(String[] subElement : subElements) {
 		p.addAction(addElementWithContent(mapID, subElement[1], subElement[0], subElement[2]));
 	    }
+	    //p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
 	    return p;
 	}
 	
@@ -359,6 +360,7 @@ public class ActionFactory {
 	    for(String[] subElement : subElements) {
 		p.addAction(addElementWithContent(mapID, subElement[1], subElement[0], subElement[2]));
 	    }
+	    //p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
 	    return p;
 	}
 
@@ -450,7 +452,6 @@ public class ActionFactory {
 		a.addParameter(ParameterTypes.ElementId, config.getElementID());
 		a.addParameter(ParameterTypes.PosX, String.valueOf(posX));
 		a.addParameter(ParameterTypes.PosY, String.valueOf(posY));
-
 		return a;
 	}
 
@@ -498,6 +499,7 @@ public class ActionFactory {
 				p.addAction(a);
 			}
 		}
+		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
 		return p;
 	}
 
@@ -530,6 +532,8 @@ public class ActionFactory {
 			}
 		}
 
+		//Action a1 = createBox(boxInfo, mapID, x, y);
+		//p.addAction(this.getInstance().startAutoOrganization(mapID));
 		return p;
 	}
 
@@ -564,6 +568,7 @@ public class ActionFactory {
 				p.addAction(c);
 			}
 		}
+		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
 		return p;
 	}
 
@@ -589,6 +594,7 @@ public class ActionFactory {
 				p.addAction(c);
 			}
 		}
+		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
 		return p;
 	}
 

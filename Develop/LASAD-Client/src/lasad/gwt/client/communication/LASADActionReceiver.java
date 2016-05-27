@@ -714,6 +714,8 @@ public class LASADActionReceiver {
 						Logger.log("WARNING: There is no highlight for this feedback", Logger.DEBUG);
 					}
 				}
+
+				//autoOrganizer.organizeMap(); Wait until auto organization is moved server-side 
 			}
 			else if (a.getCmd().equals(Commands.UpdateElement)) {
 
