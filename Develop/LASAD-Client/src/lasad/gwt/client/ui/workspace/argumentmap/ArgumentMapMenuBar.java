@@ -682,8 +682,11 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	{
 		Menu menu = new Menu();
 
-		MenuItem importItem = createImportItem();
-		menu.add(importItem);
+		MenuItem newItem = createNewItem();
+		menu.add(newItem);
+
+		/*MenuItem importItem = createImportItem();
+		menu.add(importItem);*/
 
 		MenuItem exportItem = createExportItem();
 		menu.add(exportItem);
@@ -691,8 +694,8 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 		MenuItem screenshot = kevinCreateScreenshotItem();
 		menu.add(screenshot);
 
-		MenuItem closeMap = createCloseMapItem();
-		menu.add(closeMap);
+		/*MenuItem closeMap = createCloseMapItem();
+		menu.add(closeMap);*/
 
 		return menu;
 	}
@@ -737,6 +740,8 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 
 		return menu;
 	}
+
+// For internal reference: --------------------------------------------------------------------------------------------------------------
 
 	/*
 	 *	Creates the about subitem of the LASAD menu that provides general info about what LASAD is, version, etc.
@@ -1048,5 +1053,20 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 			}
 		});
 		return organizerPreferences;
+	}
+
+	protected MenuItem createNewItem()
+	{
+		final MenuItem newItem = new MenuItem("New");
+		newItem.addSelectionListener(new SelectionListener<MenuEvent>() {
+			@Override
+			public void componentSelected(MenuEvent me)
+			{
+				ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getFocusHandler().releaseAllFocus();
+				CreateNewMapDialog newDialog = new CreateNewMapDialog(ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getID());
+				newDialog.show();
+			}
+		});
+		return newItem;
 	}
 }
