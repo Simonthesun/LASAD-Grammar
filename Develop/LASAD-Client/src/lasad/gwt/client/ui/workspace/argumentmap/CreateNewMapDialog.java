@@ -1,7 +1,26 @@
 package lasad.gwt.client.ui.workspace.argumentmap;
 
+import java.util.Map;
+
 import lasad.gwt.client.LASAD_Client;
 import lasad.gwt.client.model.organization.AutoOrganizer;
+import lasad.gwt.client.communication.LASADActionSender;
+import lasad.gwt.client.communication.helper.ActionFactory;
+import lasad.gwt.client.model.ElementInfo;
+import lasad.gwt.client.model.GraphMapInfo;
+import lasad.gwt.client.model.organization.LinkedBox;
+import lasad.gwt.client.model.organization.ArgumentGrid;
+import lasad.gwt.client.model.organization.ArgumentModel;
+import lasad.gwt.client.model.organization.ArgumentThread;
+import lasad.gwt.client.model.argument.MVCViewSession;
+import lasad.gwt.client.ui.workspace.graphmap.AbstractGraphMap;
+import lasad.gwt.client.ui.workspace.graphmap.GraphMap;
+import lasad.gwt.client.ui.workspace.graphmap.GraphMapSpace;
+import lasad.gwt.client.ui.workspace.graphmap.elements.AbstractCreateBoxDialog;
+import lasad.gwt.client.ui.workspace.graphmap.elements.AbstractCreateBoxDialogListener;
+import lasad.gwt.client.ui.workspace.transcript.TranscriptLinkData;
+import lasad.shared.communication.objects.Action;
+import lasad.shared.communication.objects.ActionPackage;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -20,20 +39,24 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 /**
- *	Creates the preferences menu that appears when selected from the LASAD menu, found in ArgumentMapMenuBar.
- *	The preferences menu allows the user to select the font size for LASAD, as well as the default box width and size for autoOrganizer.
- *	@author Kevin Loughlin
- *	@since 31 July 2015, Last Updated 11 August 2015
+ *	Creates the new diagram menu that appears when selected from the LASAD menu, found in ArgumentMapMenuBar.
+ *	The menu lets the user to input a string, which will then be parsed and created as boxes (one per word)
+ *	@author Simon Sun
+ *	@since 31 May 2016, Last Updated 7 June 2016
  */
 public class CreateNewMapDialog extends Window
 {
 	private String mapID;
+	private GraphMapInfo mapInfo;
+	private AbstractGraphMap map;
 
 	private FormData formData;
 
-	public CreateNewMapDialog(String mapID)
+	public CreateNewMapDialog(GraphMapSpace space, GraphMapInfo mapInfo)
 	{
-		this.mapID = mapID;
+		this.mapID = space.getMyMap().getID();
+		this.mapInfo = mapInfo;
+		this.map = space.getMyMap();
 	}
 
 	@Override
@@ -56,31 +79,55 @@ public class CreateNewMapDialog extends Window
 		thisForm.setHeaderVisible(false);
 		thisForm.setAutoHeight(true);
 
-		TextBox sentence = new TextBox();
-		sentence.setText("Enter sentence:");
+		final TextBox tb = new TextBox();
 
-		thisForm.add(sentence, formData);
+		thisForm.add(tb, formData);
 
 		// Okay Button
 		Button btnDone = new Button("Create Diagram");
 		btnDone.addSelectionListener(new SelectionListener<ButtonEvent>()
 		{
 			@Override
-			public void componentSelected(ButtonEvent ce)
-			{
+			public void componentSelected(ButtonEvent ce) {
 
+				String sentence = tb.getValue();
+				String[] words = sentence.split("[ .,?!]+");
 
-				AutoOrganizer myOrganizer = LASAD_Client.getMapTab(mapID).getMyMapSpace().getMyMap().getAutoOrganizer();
-				CreateNewMapDialog.this.hide();
+				LASADActionSender communicator = LASADActionSender.getInstance();
+				ActionFactory actionBuilder = ActionFactory.getInstance();
+				ActionPackage ap = new ActionPackage();
+
+				Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
+				ElementInfo info = boxes.get("Premise");
+
+				ArgumentModel argModel = map.getArgModel();
+
+				int wordCounter = 0;
+
+				AutoOrganizer myOrganizer = map.getAutoOrganizer();
+
+				for (String word : words) {
+					communicator.sendActionPackage(actionBuilder.createBoxWithElements(info, mapID, 0, 0, word));
+				}
+
+				/*for (ArgumentThread argThread : argModel.getArgThreads()) {
+					ArgumentGrid grid = argThread.getGrid();
+
+					for (LinkedBox box : grid.getBoxes()) {
+						communicator.sendActionPackage(actionBuilder.updateBoxContent(mapID, 2, "test"));
+						wordCounter++;
+					}
+				}*/
+
 				myOrganizer.organizeMap(); 
+				CreateNewMapDialog.this.hide();
 			}
 		});
 		thisForm.addButton(btnDone);
 
 		// Cancel Button
 		Button btnCancel = new Button("Cancel");
-		btnCancel.addSelectionListener(new SelectionListener<ButtonEvent>()
-		{
+		btnCancel.addSelectionListener(new SelectionListener<ButtonEvent>() {
 			@Override
 			public void componentSelected(ButtonEvent ce)
 			{

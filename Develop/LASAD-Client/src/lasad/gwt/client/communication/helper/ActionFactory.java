@@ -117,6 +117,17 @@ public class ActionFactory {
 		return p;
 	}
 
+	// Created by Simon Sun
+	public ActionPackage updateBoxContent(String mapID, int boxID, String content) {
+		ActionPackage p = new ActionPackage();
+		Action a = new Action(Commands.UpdateElement, Categories.Map);
+		a.addParameter(ParameterTypes.MapId, mapID);
+		a.addParameter(ParameterTypes.Id, String.valueOf(boxID));
+		a.addParameter(ParameterTypes.Text, content);
+		p.addAction(a);
+		return p;
+	}
+
 	public ActionPackage startAutoOrganization(String mapID)
 	{
 		ActionPackage p = new ActionPackage();
@@ -487,6 +498,40 @@ public class ActionFactory {
 		return allActions;
 	}
 
+	private Vector<Action> createBoxElementsAction(ElementInfo currentElement, String mapID, String text) {
+
+		Vector<Action> allActions = new Vector<Action>();
+
+		for (ElementInfo childElement : currentElement.getChildElements().values()) {
+			Logger.log("Creating action for ChildElement: " + childElement.getElementType(), Logger.DEBUG_DETAILS);
+			for (int i = 0; i < childElement.getQuantity(); i++) {
+				Action a = new Action(Commands.CreateElement, Categories.Map);
+//				Action a = new Action("CREATE-ELEMENT", "MAP");
+				a.addParameter(ParameterTypes.Type, childElement.getElementType());
+				a.addParameter(ParameterTypes.MapId, mapID);
+				a.addParameter(ParameterTypes.Parent, "LAST-ID");
+				a.addParameter(ParameterTypes.ElementId, String.valueOf(childElement.getElementID()));
+				a.addParameter(ParameterTypes.UserName, LASAD_Client.getInstance().getUsername());
+
+				if (childElement.getElementType().equals("rating")) {
+					a.addParameter(ParameterTypes.Score, childElement.getElementOption(ParameterTypes.Score));
+				} else if (childElement.getElementType().equals("awareness")) {
+					a.addParameter(ParameterTypes.Time, "CURRENT-TIME"); // The time will be
+
+					// filled in by the
+					// server
+				} else if (childElement.getElementType().equals("text")) {
+					a.addParameter(ParameterTypes.Text, text);
+				}
+
+				if (a != null) {
+					allActions.add(a);
+				}
+			}
+		}
+		return allActions;
+	}
+
 	//TODO wie sinnvoll ist das hier?
 	public ActionPackage createBoxWithElements(ElementInfo currentElement, String mapID, int posX, int posY) {
 		ActionPackage p = new ActionPackage();
@@ -494,6 +539,21 @@ public class ActionFactory {
 		p.addAction(action);
 
 		Vector<Action> vAction = createBoxElementsAction(currentElement, mapID);
+		if (vAction.size() > 0) {
+			for (Action a : vAction) {
+				p.addAction(a);
+			}
+		}
+		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
+		return p;
+	}
+
+	public ActionPackage createBoxWithElements(ElementInfo currentElement, String mapID, int posX, int posY, String text) {
+		ActionPackage p = new ActionPackage();
+		Action action = createBox(currentElement, mapID, posX, posY);
+		p.addAction(action);
+
+		Vector<Action> vAction = createBoxElementsAction(currentElement, mapID, text);
 		if (vAction.size() > 0) {
 			for (Action a : vAction) {
 				p.addAction(a);

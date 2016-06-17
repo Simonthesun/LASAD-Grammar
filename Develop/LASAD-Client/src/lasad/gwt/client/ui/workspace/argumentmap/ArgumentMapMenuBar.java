@@ -1063,7 +1063,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 			public void componentSelected(MenuEvent me)
 			{
 				ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getFocusHandler().releaseAllFocus();
-				CreateNewMapDialog newDialog = new CreateNewMapDialog(ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getID());
+				CreateNewMapDialog newDialog = new CreateNewMapDialog(ArgumentMapMenuBar.this.getMyMapSpace(), myMapInfo);
 				newDialog.show();
 			}
 		});
