@@ -81,6 +81,7 @@ public class CreateNewMapDialog extends Window
 
 		final TextBox tb = new TextBox();
 
+		thisForm.addText("WARNING: Creating a new sentence will replace all existing data");
 		thisForm.add(tb, formData);
 
 		// Okay Button
@@ -109,15 +110,6 @@ public class CreateNewMapDialog extends Window
 				for (String word : words) {
 					communicator.sendActionPackage(actionBuilder.createBoxWithElements(info, mapID, 0, 0, word));
 				}
-
-				/*for (ArgumentThread argThread : argModel.getArgThreads()) {
-					ArgumentGrid grid = argThread.getGrid();
-
-					for (LinkedBox box : grid.getBoxes()) {
-						communicator.sendActionPackage(actionBuilder.updateBoxContent(mapID, 2, "test"));
-						wordCounter++;
-					}
-				}*/
 
 				myOrganizer.organizeMap(); 
 				CreateNewMapDialog.this.hide();

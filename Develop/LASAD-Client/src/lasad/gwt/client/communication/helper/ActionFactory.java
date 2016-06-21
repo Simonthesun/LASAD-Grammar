@@ -498,6 +498,7 @@ public class ActionFactory {
 		return allActions;
 	}
 
+	// Seperate method for creating with a pre-determined text content
 	private Vector<Action> createBoxElementsAction(ElementInfo currentElement, String mapID, String text) {
 
 		Vector<Action> allActions = new Vector<Action>();
@@ -548,6 +549,7 @@ public class ActionFactory {
 		return p;
 	}
 
+	// Seperate method for creating with a pre-determined text content
 	public ActionPackage createBoxWithElements(ElementInfo currentElement, String mapID, int posX, int posY, String text) {
 		ActionPackage p = new ActionPackage();
 		Action action = createBox(currentElement, mapID, posX, posY);

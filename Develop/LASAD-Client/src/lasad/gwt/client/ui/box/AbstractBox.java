@@ -1322,9 +1322,11 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 				AbstractBox.this.el().updateZIndex(1);
 
 				if (AbstractBox.this.selected) {
-					AbstractBox.this.getMap().getSelectionHandler().unselectElement(AbstractBox.this);
+					AbstractBox.this.selected = false;
+					AbstractBox.this.setHighlight(false);
 				} else {
-					AbstractBox.this.getMap().getSelectionHandler().selectElement(AbstractBox.this);
+					AbstractBox.this.selected = true;
+					AbstractBox.this.setHighlight(true);
 				}
 			}
 
