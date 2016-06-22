@@ -1,5 +1,6 @@
 package lasad.gwt.client.ui.workspace.argumentmap;
 
+import java.util.Collection;
 import java.util.Map;
 
 import lasad.gwt.client.LASAD_Client;
@@ -42,7 +43,7 @@ import com.google.gwt.user.client.ui.TextBox;
  *	Creates the new diagram menu that appears when selected from the LASAD menu, found in ArgumentMapMenuBar.
  *	The menu lets the user to input a string, which will then be parsed and created as boxes (one per word)
  *	@author Simon Sun
- *	@since 31 May 2016, Last Updated 7 June 2016
+ *	@since 31 May 2016, Last Updated 22 June 2016
  */
 public class CreateNewMapDialog extends Window
 {
@@ -103,15 +104,27 @@ public class CreateNewMapDialog extends Window
 
 				ArgumentModel argModel = map.getArgModel();
 
-				int wordCounter = 0;
+//				int wordCounter = 0;
 
 				AutoOrganizer myOrganizer = map.getAutoOrganizer();
+				myOrganizer.organizeMap();
 
-				for (String word : words) {
-					communicator.sendActionPackage(actionBuilder.createBoxWithElements(info, mapID, 0, 0, word));
+				Collection<ActionPackage> removes = actionBuilder.removeAllElements(mapID);
+				for (ActionPackage p : removes) {
+					communicator.sendActionPackage(p);
 				}
 
-				myOrganizer.organizeMap(); 
+				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, 0, 0, words));
+
+				/*for (ArgumentThread argThread : argModel.getArgThreads()) {
+					ArgumentGrid grid = argThread.getGrid();
+
+					for (LinkedBox box : grid.getBoxes()) {
+						communicator.sendActionPackage(actionBuilder.updateBoxContent(mapID, 2, "test"));
+						wordCounter++;
+					}
+				}*/
+ 
 				CreateNewMapDialog.this.hide();
 			}
 		});

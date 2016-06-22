@@ -1,5 +1,6 @@
 package lasad.gwt.client.communication.helper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 
@@ -439,6 +440,18 @@ public class ActionFactory {
 		return p;
 	}
 
+	// Created by Simon Sun
+	public Collection<ActionPackage> removeAllElements(String mapID) {
+		ArrayList<ActionPackage> c = new ArrayList<ActionPackage>();
+		Collection<AbstractUnspecifiedElementModel> elements = LASAD_Client.getMVCController(mapID).getAllElements();
+
+		for (AbstractUnspecifiedElementModel element : elements) {
+			c.add(removeElement(mapID, element.getId()));
+		}
+
+		return c;
+	}
+
 	// Hack for autoOrganizer to prevent mutual recursion endless loop between LASADActionReceiver and AutoOrganizer.
 	public ActionPackage autoOrganizerRemoveElement(String mapID, int id)
 	{
@@ -549,7 +562,7 @@ public class ActionFactory {
 		return p;
 	}
 
-	// Seperate method for creating with a pre-determined text content
+	// Seperate method with specified content
 	public ActionPackage createBoxWithElements(ElementInfo currentElement, String mapID, int posX, int posY, String text) {
 		ActionPackage p = new ActionPackage();
 		Action action = createBox(currentElement, mapID, posX, posY);
@@ -559,6 +572,25 @@ public class ActionFactory {
 		if (vAction.size() > 0) {
 			for (Action a : vAction) {
 				p.addAction(a);
+			}
+		}
+		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
+		return p;
+	}
+
+	// Create several boxes at once with specified content
+	public ActionPackage createBoxesWithElements(ElementInfo currentElement, String mapID, int posX, int posY, String[] text) {
+		ActionPackage p = new ActionPackage();
+		
+		for (String s : text) {
+			Action action = createBox(currentElement, mapID, posX, posY);
+			p.addAction(action);
+
+			Vector<Action> vAction = createBoxElementsAction(currentElement, mapID, s);
+			if (vAction.size() > 0) {
+				for (Action a : vAction) {
+					p.addAction(a);
+				}
 			}
 		}
 		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));

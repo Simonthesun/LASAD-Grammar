@@ -1331,11 +1331,11 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 			}
 
 			private void onDoubleClick(ComponentEvent be) {
-				AbstractBox.this.getMap().getFadeHandler().fadeElement(AbstractBox.this.getConnectedModel().getId());
+//				AbstractBox.this.getMap().getFadeHandler().fadeElement(AbstractBox.this.getConnectedModel().getId());
 			}
 
 			private void onMouseOut(ComponentEvent be) {
-				if (northConnector.getElement().getClassName().equals("north-connector-dark")) {
+/*				if (northConnector.getElement().getClassName().equals("north-connector-dark")) {
 					northConnector.getElement().setClassName("north-connector");
 				}
 				if (eastConnector.getElement().getClassName().equals("east-connector-dark")) {
@@ -1349,10 +1349,10 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 				}
 				//DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", Style.Cursor.DEFAULT);
 				hoverTimer.schedule(500);
-			}
+*/			}
 
 			private void onMouseOver(ComponentEvent be) {
-				if (northConnector.getElement().getClassName().equals("north-connector")) {
+/*				if (northConnector.getElement().getClassName().equals("north-connector")) {
 					northConnector.getElement().setClassName("north-connector-dark");
 				}
 				if (eastConnector.getElement().getClassName().equals("east-connector")) {
@@ -1368,7 +1368,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 				AbstractBox.this.setResizeCornerVisibility(true);
 				AbstractBox.this.boxHeading.setEditButtonVisibility(true);
 				hoverTimer.cancel();
-			}
+*/			}
 		};
 
 		this.addListener(Events.OnMouseOver, componentListener);
