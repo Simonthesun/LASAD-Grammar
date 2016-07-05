@@ -53,6 +53,9 @@ public class CreateNewMapDialog extends Window
 
 	private FormData formData;
 
+	final int CENTER_X = 2400;
+	final int CENTER_Y = 2500;
+
 	public CreateNewMapDialog(GraphMapSpace space, GraphMapInfo mapInfo)
 	{
 		this.mapID = space.getMyMap().getID();
@@ -114,7 +117,17 @@ public class CreateNewMapDialog extends Window
 					communicator.sendActionPackage(p);
 				}
 
-				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, 0, 0, words));
+				// Get total width of boxes for the sentence.
+				int totalWidth = 0;
+				for (String s : words) {
+					int currentBoxWidth = 200;
+					totalWidth += currentBoxWidth;
+				}
+
+				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2);
+				int yTop = CENTER_Y;
+
+				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, xLeft, yTop, words));
 
 				/*for (ArgumentThread argThread : argModel.getArgThreads()) {
 					ArgumentGrid grid = argThread.getGrid();

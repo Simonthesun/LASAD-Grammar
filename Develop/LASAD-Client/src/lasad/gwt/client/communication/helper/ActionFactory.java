@@ -32,6 +32,9 @@ public class ActionFactory {
 	private ActionFactory() {
 	}
 
+	final int DEFAULT_WIDTH = 200;
+	final int DEFAULT_HEIGHT = 107;
+
 	public static ActionFactory getInstance() {
 		if (instance == null) {
 			instance = new ActionFactory();
@@ -582,9 +585,17 @@ public class ActionFactory {
 	public ActionPackage createBoxesWithElements(ElementInfo currentElement, String mapID, int posX, int posY, String[] text) {
 		ActionPackage p = new ActionPackage();
 		
+		int currentXLeft = posX;
+		int currentYTop = posY;
+		int currentBoxWidth; 
+
 		for (String s : text) {
-			Action action = createBox(currentElement, mapID, posX, posY);
+
+			Action action = createBox(currentElement, mapID, currentXLeft, currentYTop);
 			p.addAction(action);
+
+			currentBoxWidth = DEFAULT_WIDTH;
+			currentXLeft += currentBoxWidth;
 
 			Vector<Action> vAction = createBoxElementsAction(currentElement, mapID, s);
 			if (vAction.size() > 0) {
