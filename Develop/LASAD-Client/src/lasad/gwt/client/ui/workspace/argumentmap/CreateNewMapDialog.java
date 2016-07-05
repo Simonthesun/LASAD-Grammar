@@ -105,12 +105,11 @@ public class CreateNewMapDialog extends Window
 				Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
 				ElementInfo info = boxes.get("Premise");
 
-				ArgumentModel argModel = map.getArgModel();
-
-//				int wordCounter = 0;
-
-				AutoOrganizer myOrganizer = map.getAutoOrganizer();
-				myOrganizer.organizeMap();
+				// ArgumentModel argModel = map.getArgModel();
+				// AutoOrganizer myOrganizer = map.getAutoOrganizer();
+				// myOrganizer.organizeMap();
+				
+				// The new Auto-Organizer should be placed somewhere in this method
 
 				Collection<ActionPackage> removes = actionBuilder.removeAllElements(mapID);
 				for (ActionPackage p : removes) {

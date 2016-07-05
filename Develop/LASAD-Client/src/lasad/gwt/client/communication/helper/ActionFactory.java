@@ -587,7 +587,7 @@ public class ActionFactory {
 		
 		int currentXLeft = posX;
 		int currentYTop = posY;
-		int currentBoxWidth; 
+		int currentBoxWidth;
 
 		for (String s : text) {
 
