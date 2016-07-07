@@ -596,11 +596,11 @@ public class ActionFactory {
 
 			currentBoxWidth = DEFAULT_WIDTH;
 			currentXLeft += currentBoxWidth;
-			// Temporary repositioning. Need to call pre-defined constants in the end.
-			if (currentXLeft > 2800) {
-				currentXLeft = 2000;
-				currentYTop += 150;
-			}
+			// // Temporary repositioning. Need to call pre-defined constants in the end.
+			// if (currentXLeft > 2800) {
+			// 	currentXLeft = 2000;
+			// 	currentYTop += 150;
+			// }
 
 			Vector<Action> vAction = createBoxElementsAction(currentElement, mapID, s);
 			if (vAction.size() > 0) {

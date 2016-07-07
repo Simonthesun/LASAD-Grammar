@@ -54,7 +54,7 @@ public class CreateNewMapDialog extends Window
 	private FormData formData;
 
 	final int CENTER_X = 2400;
-	final int CENTER_Y = 2250;
+	final int CENTER_Y = 2400;
 
 	public CreateNewMapDialog(GraphMapSpace space, GraphMapInfo mapInfo)
 	{
@@ -124,9 +124,9 @@ public class CreateNewMapDialog extends Window
 				}
 
 				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2) + 100;
-				if (xLeft < 2000) {
-					xLeft = 2000;
-				}
+				// if (xLeft < 2000) {
+				// 	xLeft = 2000;
+				// }
 				int yTop = CENTER_Y;
 
 				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, xLeft, yTop, words));
