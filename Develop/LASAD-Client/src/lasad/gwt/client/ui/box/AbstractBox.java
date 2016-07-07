@@ -215,9 +215,9 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		String height = config.getUiOption(ParameterTypes.Height);
 		
 		this.setSize(Integer.parseInt(width), Integer.parseInt(height));
-		this.title = config.getElementOption(ParameterTypes.Heading);
-		this.color = config.getUiOption(ParameterTypes.BackgroundColor);
-		setBorder(config.getUiOption(ParameterTypes.Border));
+		this.title = ""; // config.getElementOption(ParameterTypes.Heading);
+		this.color = "#FFFFFF"; // config.getUiOption(ParameterTypes.BackgroundColor);
+		// setBorder(config.getUiOption(ParameterTypes.Border));
 
 		//boxHeading = new BoxHeaderElement(this, this.title,isR);
 		
@@ -1531,7 +1531,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	@Override
 	public void unselect() {
-		DOM.setStyleAttribute(this.rootElement, "border", "none");
+		// DOM.setStyleAttribute(this.rootElement, "border", "none");
 		this.selected = false;
 
 		//this.myMap.getMyArgumentMapSpace().changeSelectionDetailsPanelTo(new SelectionDetailsPanel(myMap));

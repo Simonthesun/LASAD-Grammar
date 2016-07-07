@@ -54,7 +54,7 @@ public class CreateNewMapDialog extends Window
 	private FormData formData;
 
 	final int CENTER_X = 2400;
-	final int CENTER_Y = 2500;
+	final int CENTER_Y = 2250;
 
 	public CreateNewMapDialog(GraphMapSpace space, GraphMapInfo mapInfo)
 	{
@@ -108,7 +108,7 @@ public class CreateNewMapDialog extends Window
 				// ArgumentModel argModel = map.getArgModel();
 				// AutoOrganizer myOrganizer = map.getAutoOrganizer();
 				// myOrganizer.organizeMap();
-				
+
 				// The new Auto-Organizer should be placed somewhere in this method
 
 				Collection<ActionPackage> removes = actionBuilder.removeAllElements(mapID);
@@ -123,7 +123,10 @@ public class CreateNewMapDialog extends Window
 					totalWidth += currentBoxWidth;
 				}
 
-				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2);
+				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2) + 100;
+				if (xLeft < 2000) {
+					xLeft = 2000;
+				}
 				int yTop = CENTER_Y;
 
 				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, xLeft, yTop, words));
