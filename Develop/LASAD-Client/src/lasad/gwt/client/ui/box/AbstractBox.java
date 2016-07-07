@@ -827,6 +827,10 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		return rootElement;
 	}
 
+	public boolean getSelected() {
+		return selected;
+	}
+	
 	public TranscriptLinkData getTData() {
 		return tData;
 	}

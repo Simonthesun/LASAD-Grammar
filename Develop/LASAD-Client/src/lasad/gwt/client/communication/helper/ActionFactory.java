@@ -8,6 +8,7 @@ import lasad.gwt.client.LASAD_Client;
 import lasad.gwt.client.logger.Logger;
 import lasad.gwt.client.model.AbstractUnspecifiedElementModel;
 import lasad.gwt.client.model.ElementInfo;
+import lasad.gwt.client.model.organization.GrammarNode;
 import lasad.gwt.client.ui.common.AbstractExtendedElement;
 import lasad.gwt.client.ui.workspace.graphmap.GraphMap;
 import lasad.gwt.client.ui.workspace.questionnaire.QuestionConfig;
