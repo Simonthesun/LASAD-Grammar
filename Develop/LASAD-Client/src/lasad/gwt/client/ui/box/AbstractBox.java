@@ -87,13 +87,13 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	private String title; // Title of the box, which appears in the header
 	private String color; // Color code of the header
-	private String border = "standard"; // The outter border of the box
+	private String border = "#FFFFFF"; // The outter border of the box
 	private TranscriptLinkData tData = null;
 	private boolean selected = false, autogrow = false;
 
 	// Constants to calculate elements size correctly
 	public static final int CONNECTOR_WIDTH = 24, CONNECTOR_HEIGHT = 12;
-	public static final int BORDER_WIDTH = 5, BORDER_HEIGHT = 5;
+	public static final int BORDER_WIDTH = 0, BORDER_HEIGHT = 0;
 	private int HEADER_HEIGHT = 13;
 
 	private final int HIGHLIGHT_TIMER = 30000; // Time until a highlight will
@@ -130,27 +130,27 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	private Element innerTopRow;
 	private Element innerTopRowLeftCell;
 
-	private Element borderULC;
+	// private Element borderULC;
 	private Element innerTopRowMiddleCell;
-	private Element borderUMC;
+	// private Element borderUMC;
 	private Element innerTopRowRightCell;
-	private Element borderURC;
+	// private Element borderURC;
 	private Element innerMiddleRow;
 	private Element innerMiddleRowLeftCell;
 
-	private Element borderMLC;
+	// private Element borderMLC;
 	private Element innerMiddleRowMiddleCell;
 	private Element boxContentDiv;
 	private Element innerMiddleRowRightCell;
-	private Element borderMRC;
+	// private Element borderMRC;
 	private Element innerBottomRow;
 	private Element innerBottomRowLeftCell;
 
-	private Element borderBLC;
+	// private Element borderBLC;
 	private Element innerBottomRowMiddleCell;
-	private Element borderBMC;
+	// private Element borderBMC;
 	private Element innerBottomRowRightCell;
-	private Element borderBRC;
+	// private Element borderBRC;
 	private Element outerMiddleRowRightCell;
 	public Element eastArea;
 
@@ -361,31 +361,31 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 		// Borders
 		// Top row
-		DOM.setStyleAttribute(borderULC, "height", BORDER_HEIGHT + "px");
-		DOM.setStyleAttribute(borderULC, "width", BORDER_WIDTH + "px");
+		// DOM.setStyleAttribute(borderULC, "height", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderULC, "width", BORDER_WIDTH + "px");
 
-		DOM.setStyleAttribute(borderUMC, "height", BORDER_HEIGHT + "px");
-		DOM.setStyleAttribute(borderUMC, "width", (this.width - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
+		// DOM.setStyleAttribute(borderUMC, "height", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderUMC, "width", (this.width - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
 
-		DOM.setStyleAttribute(borderURC, "height", BORDER_HEIGHT + "px");
-		DOM.setStyleAttribute(borderURC, "width", BORDER_WIDTH + "px");
+		// DOM.setStyleAttribute(borderURC, "height", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderURC, "width", BORDER_WIDTH + "px");
 
 		// Middle row
-		DOM.setStyleAttribute(borderMLC, "height", (this.height - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
-		DOM.setStyleAttribute(borderMLC, "width", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderMLC, "height", (this.height - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
+		// DOM.setStyleAttribute(borderMLC, "width", BORDER_HEIGHT + "px");
 
-		DOM.setStyleAttribute(borderMRC, "height", (this.height - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
-		DOM.setStyleAttribute(borderMRC, "width", BORDER_WIDTH + "px");
+		// DOM.setStyleAttribute(borderMRC, "height", (this.height - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
+		// DOM.setStyleAttribute(borderMRC, "width", BORDER_WIDTH + "px");
 
-		// Bottom row
-		DOM.setStyleAttribute(borderBLC, "height", BORDER_HEIGHT + "px");
-		DOM.setStyleAttribute(borderBLC, "width", BORDER_WIDTH + "px");
+		// // Bottom row
+		// DOM.setStyleAttribute(borderBLC, "height", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderBLC, "width", BORDER_WIDTH + "px");
 
-		DOM.setStyleAttribute(borderBMC, "height", BORDER_HEIGHT + "px");
-		DOM.setStyleAttribute(borderBMC, "width", (this.width - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
+		// DOM.setStyleAttribute(borderBMC, "height", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderBMC, "width", (this.width - CONNECTOR_HEIGHT - CONNECTOR_HEIGHT - BORDER_HEIGHT - BORDER_HEIGHT) + "px");
 
-		DOM.setStyleAttribute(borderBRC, "height", BORDER_HEIGHT + "px");
-		DOM.setStyleAttribute(borderBRC, "width", BORDER_WIDTH + "px");
+		// DOM.setStyleAttribute(borderBRC, "height", BORDER_HEIGHT + "px");
+		// DOM.setStyleAttribute(borderBRC, "width", BORDER_WIDTH + "px");
 
 		// Resize corners
 		DOM.setStyleAttribute(resizeCornerSW, "height", CONNECTOR_HEIGHT + "px");
@@ -706,14 +706,14 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	/** Avoids unwanted selection of GUI elements on drag & drop **/
 	private void disableTextSelection() {
-		TextSelection.disableTextSelection(borderULC);
-		TextSelection.disableTextSelection(borderUMC);
-		TextSelection.disableTextSelection(borderURC);
-		TextSelection.disableTextSelection(borderMLC);
-		TextSelection.disableTextSelection(borderMRC);
-		TextSelection.disableTextSelection(borderBLC);
-		TextSelection.disableTextSelection(borderBMC);
-		TextSelection.disableTextSelection(borderBRC);
+		// TextSelection.disableTextSelection(borderULC);
+		// TextSelection.disableTextSelection(borderUMC);
+		// TextSelection.disableTextSelection(borderURC);
+		// TextSelection.disableTextSelection(borderMLC);
+		// TextSelection.disableTextSelection(borderMRC);
+		// TextSelection.disableTextSelection(borderBLC);
+		// TextSelection.disableTextSelection(borderBMC);
+		// TextSelection.disableTextSelection(borderBRC);
 
 		TextSelection.disableTextSelection(resizeCornerNE);
 		TextSelection.disableTextSelection(resizeCornerNW);
@@ -964,21 +964,21 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 		this.innerTopRowLeftCell = DOM.createTD();
 		innerTopRowLeftCell.setClassName("box-innerGrid-ulc");
-		this.borderULC = DOM.createDiv();
+		// this.borderULC = DOM.createDiv();
 
-		DOM.appendChild(innerTopRowLeftCell, borderULC);
+		// DOM.appendChild(innerTopRowLeftCell, borderULC);
 
 		this.innerTopRowMiddleCell = DOM.createTD();
 		innerTopRowMiddleCell.setClassName("box-innerGrid-umc");
-		this.borderUMC = DOM.createDiv();
+		// this.borderUMC = DOM.createDiv();
 
-		DOM.appendChild(innerTopRowMiddleCell, borderUMC);
+		// DOM.appendChild(innerTopRowMiddleCell, borderUMC);
 
 		this.innerTopRowRightCell = DOM.createTD();
 		innerTopRowRightCell.setClassName("box-innerGrid-urc");
-		this.borderURC = DOM.createDiv();
+		// this.borderURC = DOM.createDiv();
 
-		DOM.appendChild(innerTopRowRightCell, borderURC);
+		// DOM.appendChild(innerTopRowRightCell, borderURC);
 
 		DOM.appendChild(innerTopRow, innerTopRowLeftCell);
 		DOM.appendChild(innerTopRow, innerTopRowMiddleCell);
@@ -990,8 +990,8 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 		this.innerMiddleRowLeftCell = DOM.createTD();
 		innerMiddleRowLeftCell.setClassName("box-innerGrid-mlc");
-		this.borderMLC = DOM.createDiv();
-		DOM.appendChild(innerMiddleRowLeftCell, borderMLC);
+		// this.borderMLC = DOM.createDiv();
+		// DOM.appendChild(innerMiddleRowLeftCell, borderMLC);
 
 		this.innerMiddleRowMiddleCell = DOM.createTD();
 		innerMiddleRowMiddleCell.setClassName("box-innerGrid-mmc");
@@ -1001,9 +1001,9 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 		this.innerMiddleRowRightCell = DOM.createTD();
 		innerMiddleRowRightCell.setClassName("box-innerGrid-mrc");
-		this.borderMRC = DOM.createDiv();
+		// this.borderMRC = DOM.createDiv();
 
-		DOM.appendChild(innerMiddleRowRightCell, borderMRC);
+		// DOM.appendChild(innerMiddleRowRightCell, borderMRC);
 
 		DOM.appendChild(innerMiddleRow, innerMiddleRowLeftCell);
 		DOM.appendChild(innerMiddleRow, innerMiddleRowMiddleCell);
@@ -1015,21 +1015,21 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 		this.innerBottomRowLeftCell = DOM.createTD();
 		innerBottomRowLeftCell.setClassName("box-innerGrid-blc");
-		this.borderBLC = DOM.createDiv();
+		// this.borderBLC = DOM.createDiv();
 
-		DOM.appendChild(innerBottomRowLeftCell, borderBLC);
+		// DOM.appendChild(innerBottomRowLeftCell, borderBLC);
 
 		this.innerBottomRowMiddleCell = DOM.createTD();
 		innerBottomRowMiddleCell.setClassName("box-innerGrid-bmc");
-		this.borderBMC = DOM.createDiv();
+		// this.borderBMC = DOM.createDiv();
 
-		DOM.appendChild(innerBottomRowMiddleCell, borderBMC);
+		// DOM.appendChild(innerBottomRowMiddleCell, borderBMC);
 
 		this.innerBottomRowRightCell = DOM.createTD();
 		innerBottomRowRightCell.setClassName("box-innerGrid-brc");
-		this.borderBRC = DOM.createDiv();
+		// this.borderBRC = DOM.createDiv();
 
-		DOM.appendChild(innerBottomRowRightCell, borderBRC);
+		// DOM.appendChild(innerBottomRowRightCell, borderBRC);
 
 		DOM.appendChild(innerBottomRow, innerBottomRowLeftCell);
 		DOM.appendChild(innerBottomRow, innerBottomRowMiddleCell);
@@ -1137,97 +1137,97 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	 */
 	public void setBorder(String border) {
 
-		if (border.equals("highlighted")) {
+		// if (border.equals("highlighted")) {
 
-			borderULC.setClassName("border-highlighted");
-			borderUMC.setClassName("border-highlighted");
-			borderURC.setClassName("border-highlighted");
-			borderMLC.setClassName("border-highlighted");
-			borderMRC.setClassName("border-highlighted");
-			borderBLC.setClassName("border-highlighted");
-			borderBMC.setClassName("border-highlighted");
-			borderBRC.setClassName("border-highlighted");
-		}
+		// 	borderULC.setClassName("border-highlighted");
+		// 	borderUMC.setClassName("border-highlighted");
+		// 	borderURC.setClassName("border-highlighted");
+		// 	borderMLC.setClassName("border-highlighted");
+		// 	borderMRC.setClassName("border-highlighted");
+		// 	borderBLC.setClassName("border-highlighted");
+		// 	borderBMC.setClassName("border-highlighted");
+		// 	borderBRC.setClassName("border-highlighted");
+		// }
 
-		else if (border.equals("standard")) {
+		// else if (border.equals("standard")) {
 
-			borderULC.setClassName("border-ulc-standard");
-			borderUMC.setClassName("border-umc-standard");
-			borderURC.setClassName("border-urc-standard");
-			borderMLC.setClassName("border-mlc-standard");
-			borderMRC.setClassName("border-mrc-standard");
-			borderBLC.setClassName("border-blc-standard");
-			borderBMC.setClassName("border-bmc-standard");
-			borderBRC.setClassName("border-brc-standard");
+		// 	borderULC.setClassName("border-ulc-standard");
+		// 	borderUMC.setClassName("border-umc-standard");
+		// 	borderURC.setClassName("border-urc-standard");
+		// 	borderMLC.setClassName("border-mlc-standard");
+		// 	borderMRC.setClassName("border-mrc-standard");
+		// 	borderBLC.setClassName("border-blc-standard");
+		// 	borderBMC.setClassName("border-bmc-standard");
+		// 	borderBRC.setClassName("border-brc-standard");
 
-		}
+		// }
 
-		else if (border.equals("double")) {
-			borderULC.setClassName("border-ulc-double");
-			borderUMC.setClassName("border-umc-double");
-			borderURC.setClassName("border-urc-double");
-			borderMLC.setClassName("border-mlc-double");
-			borderMRC.setClassName("border-mrc-double");
-			borderBLC.setClassName("border-blc-double");
-			borderBMC.setClassName("border-bmc-double");
-			borderBRC.setClassName("border-brc-double");
-		}
+		// else if (border.equals("double")) {
+		// 	borderULC.setClassName("border-ulc-double");
+		// 	borderUMC.setClassName("border-umc-double");
+		// 	borderURC.setClassName("border-urc-double");
+		// 	borderMLC.setClassName("border-mlc-double");
+		// 	borderMRC.setClassName("border-mrc-double");
+		// 	borderBLC.setClassName("border-blc-double");
+		// 	borderBMC.setClassName("border-bmc-double");
+		// 	borderBRC.setClassName("border-brc-double");
+		// }
 
-		else if (border.equals("round")) {
-			borderULC.setClassName("border-ulc-round");
-			borderUMC.setClassName("border-umc-round");
-			borderURC.setClassName("border-urc-round");
-			borderMLC.setClassName("border-mlc-round");
-			borderMRC.setClassName("border-mrc-round");
-			borderBLC.setClassName("border-blc-round");
-			borderBMC.setClassName("border-bmc-round");
-			borderBRC.setClassName("border-brc-round");
-		}
+		// else if (border.equals("round")) {
+		// 	borderULC.setClassName("border-ulc-round");
+		// 	borderUMC.setClassName("border-umc-round");
+		// 	borderURC.setClassName("border-urc-round");
+		// 	borderMLC.setClassName("border-mlc-round");
+		// 	borderMRC.setClassName("border-mrc-round");
+		// 	borderBLC.setClassName("border-blc-round");
+		// 	borderBMC.setClassName("border-bmc-round");
+		// 	borderBRC.setClassName("border-brc-round");
+		// }
 
-		else if (border.equals("dashed")) {
-			borderULC.setClassName("border-ulc-dashed");
-			borderUMC.setClassName("border-umc-dashed");
-			borderURC.setClassName("border-urc-dashed");
-			borderMLC.setClassName("border-mlc-dashed");
-			borderMRC.setClassName("border-mrc-dashed");
-			borderBLC.setClassName("border-blc-dashed");
-			borderBMC.setClassName("border-bmc-dashed");
-			borderBRC.setClassName("border-brc-dashed");
-		}
+		// else if (border.equals("dashed")) {
+		// 	borderULC.setClassName("border-ulc-dashed");
+		// 	borderUMC.setClassName("border-umc-dashed");
+		// 	borderURC.setClassName("border-urc-dashed");
+		// 	borderMLC.setClassName("border-mlc-dashed");
+		// 	borderMRC.setClassName("border-mrc-dashed");
+		// 	borderBLC.setClassName("border-blc-dashed");
+		// 	borderBMC.setClassName("border-bmc-dashed");
+		// 	borderBRC.setClassName("border-brc-dashed");
+		// }
 
-		else if (border.equals("zigzag")) {
-			borderULC.setClassName("border-ulc-zigzag");
-			borderUMC.setClassName("border-umc-zigzag");
-			borderURC.setClassName("border-urc-zigzag");
-			borderMLC.setClassName("border-mlc-zigzag");
-			borderMRC.setClassName("border-mrc-zigzag");
-			borderBLC.setClassName("border-blc-zigzag");
-			borderBMC.setClassName("border-bmc-zigzag");
-			borderBRC.setClassName("border-brc-zigzag");
-		} else {
-			// Change Class to border-highlighted-color defined in
-			// boxHighlight.css
-			// It has no style attributes but is necessary for a "clean" change
-			borderULC.setClassName("border-highlighted-color");
-			borderUMC.setClassName("border-highlighted-color");
-			borderURC.setClassName("border-highlighted-color");
-			borderMLC.setClassName("border-highlighted-color");
-			borderMRC.setClassName("border-highlighted-color");
-			borderBLC.setClassName("border-highlighted-color");
-			borderBMC.setClassName("border-highlighted-color");
-			borderBRC.setClassName("border-highlighted-color");
+		// else if (border.equals("zigzag")) {
+		// 	borderULC.setClassName("border-ulc-zigzag");
+		// 	borderUMC.setClassName("border-umc-zigzag");
+		// 	borderURC.setClassName("border-urc-zigzag");
+		// 	borderMLC.setClassName("border-mlc-zigzag");
+		// 	borderMRC.setClassName("border-mrc-zigzag");
+		// 	borderBLC.setClassName("border-blc-zigzag");
+		// 	borderBMC.setClassName("border-bmc-zigzag");
+		// 	borderBRC.setClassName("border-brc-zigzag");
+		// } else {
+		// 	// Change Class to border-highlighted-color defined in
+		// 	// boxHighlight.css
+		// 	// It has no style attributes but is necessary for a "clean" change
+		// 	borderULC.setClassName("border-highlighted-color");
+		// 	borderUMC.setClassName("border-highlighted-color");
+		// 	borderURC.setClassName("border-highlighted-color");
+		// 	borderMLC.setClassName("border-highlighted-color");
+		// 	borderMRC.setClassName("border-highlighted-color");
+		// 	borderBLC.setClassName("border-highlighted-color");
+		// 	borderBMC.setClassName("border-highlighted-color");
+		// 	borderBRC.setClassName("border-highlighted-color");
 
-			// Look for hex color code and change background via DOM to given
-			// color
-			DOM.setStyleAttribute(borderULC, "background", border);
-			DOM.setStyleAttribute(borderUMC, "background", border);
-			DOM.setStyleAttribute(borderURC, "background", border);
-			DOM.setStyleAttribute(borderMLC, "background", border);
-			DOM.setStyleAttribute(borderMRC, "background", border);
-			DOM.setStyleAttribute(borderBLC, "background", border);
-			DOM.setStyleAttribute(borderBMC, "background", border);
-			DOM.setStyleAttribute(borderBRC, "background", border);
-		}
+		// 	// Look for hex color code and change background via DOM to given
+		// 	// color
+		// 	DOM.setStyleAttribute(borderULC, "background", border);
+		// 	DOM.setStyleAttribute(borderUMC, "background", border);
+		// 	DOM.setStyleAttribute(borderURC, "background", border);
+		// 	DOM.setStyleAttribute(borderMLC, "background", border);
+		// 	DOM.setStyleAttribute(borderMRC, "background", border);
+		// 	DOM.setStyleAttribute(borderBLC, "background", border);
+		// 	DOM.setStyleAttribute(borderBMC, "background", border);
+		// 	DOM.setStyleAttribute(borderBRC, "background", border);
+		// }
 	}
 
 	public void setColor(String color) {
