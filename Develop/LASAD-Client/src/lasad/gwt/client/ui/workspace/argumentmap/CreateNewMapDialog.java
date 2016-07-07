@@ -53,6 +53,9 @@ public class CreateNewMapDialog extends Window
 
 	private FormData formData;
 
+	final int CENTER_X = 2400;
+	final int CENTER_Y = 2400;
+
 	public CreateNewMapDialog(GraphMapSpace space, GraphMapInfo mapInfo)
 	{
 		this.mapID = space.getMyMap().getID();
@@ -102,19 +105,31 @@ public class CreateNewMapDialog extends Window
 				Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
 				ElementInfo info = boxes.get("Premise");
 
-				ArgumentModel argModel = map.getArgModel();
+				// ArgumentModel argModel = map.getArgModel();
+				// AutoOrganizer myOrganizer = map.getAutoOrganizer();
+				// myOrganizer.organizeMap();
 
-//				int wordCounter = 0;
-
-				AutoOrganizer myOrganizer = map.getAutoOrganizer();
-				myOrganizer.organizeMap();
+				// The new Auto-Organizer should be placed somewhere in this method
 
 				Collection<ActionPackage> removes = actionBuilder.removeAllElements(mapID);
 				for (ActionPackage p : removes) {
 					communicator.sendActionPackage(p);
 				}
 
-				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, 0, 0, words));
+				// Get total width of boxes for the sentence.
+				int totalWidth = 0;
+				for (String s : words) {
+					int currentBoxWidth = 200;
+					totalWidth += currentBoxWidth;
+				}
+
+				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2) + 100;
+				// if (xLeft < 2000) {
+				// 	xLeft = 2000;
+				// }
+				int yTop = CENTER_Y;
+
+				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, xLeft, yTop, words));
 
 				/*for (ArgumentThread argThread : argModel.getArgThreads()) {
 					ArgumentGrid grid = argThread.getGrid();

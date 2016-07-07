@@ -8,6 +8,7 @@ import lasad.gwt.client.model.AbstractMVCViewSession;
 // Kevin Loughlin
 import lasad.gwt.client.model.organization.ArgumentModel;
 import lasad.gwt.client.model.organization.AutoOrganizer;
+import lasad.gwt.client.model.organization.NodeCreator;
 import lasad.gwt.client.ui.common.FocusableInterface;
 import lasad.gwt.client.ui.common.GenericFocusHandler;
 import lasad.gwt.client.ui.common.GenericSelectionHandler;
@@ -65,6 +66,7 @@ public abstract class AbstractGraphMap extends ContentPanel implements Focusable
 
 	protected ArgumentModel argModel;
 	protected AutoOrganizer autoOrganizer;
+	protected NodeCreator nodeCreator;
 
 	public AbstractGraphMap(GraphMapSpace parentElement) {
 		this.myArgumentMapSpace = parentElement;
@@ -75,6 +77,7 @@ public abstract class AbstractGraphMap extends ContentPanel implements Focusable
 		highlightHandler = new GenericHighlightHandler(this);
 		argModel = new ArgumentModel(this.getID());
 		autoOrganizer = new AutoOrganizer(this);
+		nodeCreator = new NodeCreator(this);
 	}
 
 	/*
@@ -104,6 +107,10 @@ public abstract class AbstractGraphMap extends ContentPanel implements Focusable
 	public AutoOrganizer getAutoOrganizer()
 	{
 		return this.autoOrganizer;
+	}
+
+	public NodeCreator getNodeCreator() {
+		return this.nodeCreator;
 	}
 
 	public ArgumentModel getArgModel()

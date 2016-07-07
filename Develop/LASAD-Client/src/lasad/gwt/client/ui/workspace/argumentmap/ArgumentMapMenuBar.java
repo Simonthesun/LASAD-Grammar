@@ -16,6 +16,7 @@ import lasad.gwt.client.model.argument.MVCViewSession;
 import lasad.gwt.client.model.argument.MVController;
 import lasad.gwt.client.model.organization.AutoOrganizer;
 import lasad.gwt.client.model.organization.EdgeCoords;
+import lasad.gwt.client.model.organization.NodeCreator;
 import lasad.gwt.client.settings.DebugSettings;
 import lasad.gwt.client.ui.box.AbstractBox;
 import lasad.gwt.client.ui.link.AbstractLink;
@@ -143,7 +144,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	{
 		//final Button itemLASAD = new Button("LASAD");
 		final Button itemFile = new Button("File");
-		//final Button itemEdit = new Button(myConstants.EditMenu());
+		final Button itemEdit = new Button("Edit");
 		final Button itemView = new Button("View");
 		/*final Button itemHelp = new Button("Help")
 		{
@@ -156,12 +157,12 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 
 		//Menu lasadMenu = createLASADmenu();
 		Menu fileMenu = createFileMenu();
-		//Menu editMenu = createEditMenu();
+		Menu editMenu = createEditMenu();
 		Menu viewMenu = createViewMenu();
 
 		//itemLASAD.setMenu(lasadMenu);
 		itemFile.setMenu(fileMenu);
-		//itemEdit.setMenu(editMenu);
+		itemEdit.setMenu(editMenu);
 		itemView.setMenu(viewMenu);
 
 		/*	Menu was becoming permanently frozen open on double click, so this is a hack to close it instead.  Users should just
@@ -184,14 +185,14 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 			}
 		});
 
-		/*itemEdit.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
+		itemEdit.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
 		{
 			@Override
 			public void handleEvent(BaseEvent be)
 			{
 				itemEdit.hideMenu();
 			}
-		});*/
+		});
 
 		itemView.addListener(Events.OnDoubleClick, new Listener<BaseEvent>()
 		{
@@ -204,7 +205,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 
 		//this.add(itemLASAD);
 		this.add(itemFile);
-		//this.add(itemEdit);
+		this.add(itemEdit);
 		this.add(itemView);
 		//this.add(itemHelp);
 
@@ -703,18 +704,21 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	/*
 	 *	Create the menu for editing (add, delete, autoOrganize, maybe undo if we implement that, etc.)
 	 */
-	/*protected Menu createEditMenu() {
+	protected Menu createEditMenu() {
 		Menu menu = new Menu();
 
 		// TODO Re-implement the undo function (untouched by CMU staff in summer of 2015, to be developed still)
 		// MenuItem editUndoItem = createEditUndoItem();
 		// menu.add(editUndoItem);
 
-		MenuItem addItem = createAddItem();
-		menu.add(addItem);
+		//MenuItem addItem = createAddItem();
+		//menu.add(addItem);
 
-		MenuItem deleteItem = createDeleteItem();
-		menu.add(deleteItem);
+		//MenuItem deleteItem = createDeleteItem();
+		//menu.add(deleteItem);
+
+		MenuItem createNodeItem = createCreateNodeItem();
+		menu.add(createNodeItem);
 
 		MenuItem fontSizeItem = createFontSizeItem();
 		menu.add(fontSizeItem);
@@ -723,7 +727,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 		menu.add(autoOrganizeItem);
 
 		return menu;
-	}*/
+	}
 
 	/*
 	 *	Create the menu for viewing (all there is right now is centering a contribution)
@@ -862,12 +866,12 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	/*
 	 *	Subitem of the edit menu that allows an alternative way to clicking for deleting an item from the map
 	 */
-	protected MenuItem createDeleteItem()
+	/*protected MenuItem createDeleteItem()
 	{
 		MenuItem deleteItem = new MenuItem("Delete");
 		deleteItem.setSubMenu(createBoxLinkMenu(false));
 		return deleteItem;
-	}
+	}*/
 
 	/*
 	 *	Provides "Contribution" and "relation" as options
@@ -1055,18 +1059,30 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 		return organizerPreferences;
 	}
 
-	protected MenuItem createNewItem()
-	{
+	protected MenuItem createNewItem() {
 		final MenuItem newItem = new MenuItem("New");
 		newItem.addSelectionListener(new SelectionListener<MenuEvent>() {
 			@Override
-			public void componentSelected(MenuEvent me)
-			{
+			public void componentSelected(MenuEvent me) {
 				ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getFocusHandler().releaseAllFocus();
 				CreateNewMapDialog newDialog = new CreateNewMapDialog(ArgumentMapMenuBar.this.getMyMapSpace(), myMapInfo);
 				newDialog.show();
 			}
 		});
 		return newItem;
+	}
+
+	protected MenuItem createCreateNodeItem() {
+		final MenuItem createNode = new MenuItem("Create Node");
+		createNode.addSelectionListener(new SelectionListener<MenuEvent>() {
+			@Override
+			public void componentSelected(MenuEvent ce)
+			{
+				NodeCreator creator = ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getNodeCreator();
+				ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getFocusHandler().releaseAllFocus();
+				creator.createNode();
+			}
+		});
+		return createNode;
 	}
 }
