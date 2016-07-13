@@ -119,14 +119,12 @@ public class CreateNewMapDialog extends Window
 				// Get total width of boxes for the sentence.
 				int totalWidth = 0;
 				for (String s : words) {
-					int currentBoxWidth = 200;
+					int wordLength = s.length();
+					int currentBoxWidth = 50 + wordLength * 10;
 					totalWidth += currentBoxWidth;
 				}
 
 				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2) + 100;
-				// if (xLeft < 2000) {
-				// 	xLeft = 2000;
-				// }
 				int yTop = CENTER_Y;
 
 				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, xLeft, yTop, words));

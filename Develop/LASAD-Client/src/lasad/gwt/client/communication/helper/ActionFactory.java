@@ -589,19 +589,22 @@ public class ActionFactory {
 		int currentXLeft = posX;
 		int currentYTop = posY;
 		int currentBoxWidth;
+		int currentBoxHeight;
 
 		for (String s : text) {
 
+			int wordLength = s.length();
+			currentBoxWidth = 50 + wordLength * 10;
+			currentBoxHeight = 107;
+
 			Action action = createBox(currentElement, mapID, currentXLeft, currentYTop);
+			action.addParameter(ParameterTypes.Width, String.valueOf(currentBoxWidth));
+			action.addParameter(ParameterTypes.Height, String.valueOf(currentBoxHeight));
 			p.addAction(action);
 
-			currentBoxWidth = DEFAULT_WIDTH;
 			currentXLeft += currentBoxWidth;
-			// // Temporary repositioning. Need to call pre-defined constants in the end.
-			// if (currentXLeft > 2800) {
-			// 	currentXLeft = 2000;
-			// 	currentYTop += 150;
-			// }
+
+			// JUDY
 
 			Vector<Action> vAction = createBoxElementsAction(currentElement, mapID, s);
 			if (vAction.size() > 0) {
@@ -610,6 +613,13 @@ public class ActionFactory {
 				}
 			}
 		}
+
+		int fontSize = 18;
+		Action manageFontSize = new Action(Commands.ChangeFontSize, Categories.Map);
+		manageFontSize.addParameter(ParameterTypes.MapId, mapID);
+		manageFontSize.addParameter(ParameterTypes.FontSize, Integer.toString(fontSize));
+		p.addAction(manageFontSize);
+
 		//p.addActionPackage(this.getInstance().startAutoOrganization(mapID));
 		return p;
 	}
