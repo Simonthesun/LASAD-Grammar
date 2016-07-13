@@ -17,7 +17,7 @@ import lasad.gwt.client.ui.box.AbstractBox;
 import lasad.gwt.client.ui.box.argument.BoxArgument;
 import lasad.gwt.client.ui.common.AbstractExtendedElement;
 import lasad.gwt.client.ui.common.ExtendedElementContainerInterface;
-import lasad.gwt.client.ui.common.argument.elements.ExtendedAwarenessElementArgument;
+// import lasad.gwt.client.ui.common.argument.elements.ExtendedAwarenessElementArgument;
 import lasad.gwt.client.ui.common.argument.elements.ExtendedDropdownElementArgument;
 import lasad.gwt.client.ui.common.argument.elements.ExtendedImageElementArgument;
 import lasad.gwt.client.ui.common.argument.elements.ExtendedRadioButtonElementArgument;
@@ -474,43 +474,43 @@ public class ArgumentMapMVCViewSession extends MVCViewSession {
 				}
 			}
 		} else if (model.getType().equalsIgnoreCase("awareness")) {
-			Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add Awareness-Field", Logger.DEBUG);
-			// CREATE A NEW AWARENESS FIELD
-			for (AbstractUnspecifiedElementModel parent : model.getParents()) {
-				for (MVCViewRecipient recipient : this.modelMapped2ViewRecipient.get(parent)) {
-					if (recipient instanceof ExtendedElementContainerInterface) {
-						Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add awareness-field to an ExtendedElementContainer", Logger.DEBUG);
+		// 	Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add Awareness-Field", Logger.DEBUG);
+		// 	// CREATE A NEW AWARENESS FIELD
+		// 	for (AbstractUnspecifiedElementModel parent : model.getParents()) {
+		// 		for (MVCViewRecipient recipient : this.modelMapped2ViewRecipient.get(parent)) {
+		// 			if (recipient instanceof ExtendedElementContainerInterface) {
+		// 				Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add awareness-field to an ExtendedElementContainer", Logger.DEBUG);
 
-						if (("true").equalsIgnoreCase(((ExtendedElementContainerInterface) recipient).getElementInfo().getChildElements().get(model.getValue(ParameterTypes.ElementId)).getElementOption(ParameterTypes.DetailsOnly)) && recipient instanceof AbstractBox) {
+		// 				if (("true").equalsIgnoreCase(((ExtendedElementContainerInterface) recipient).getElementInfo().getChildElements().get(model.getValue(ParameterTypes.ElementId)).getElementOption(ParameterTypes.DetailsOnly)) && recipient instanceof AbstractBox) {
 
-						} else {
-							// Create awarenessField
-							ExtendedAwarenessElementArgument awarenessField = null;
+		// 				} else {
+		// 					// Create awarenessField
+		// 					ExtendedAwarenessElementArgument awarenessField = null;
 
-							if (model.getValue(ParameterTypes.Text) != null) {
-								awarenessField = new ExtendedAwarenessElementArgument((ExtendedElementContainerInterface) recipient, ((ExtendedElementContainerInterface) recipient).getElementInfo().getChildElements().get(model.getValue(ParameterTypes.ElementId)), model.getValue(ParameterTypes.Text));
-							} else if (model.getValue(ParameterTypes.Time) != null) {
-								if (model.getValue(ParameterTypes.UserName) != null) {
-									Date date = new Date(Long.parseLong(model.getValue(ParameterTypes.Time)));
-									String timeString = date.toString();
-									timeString = timeString.substring(4, 16);
-									String authorAndTime = model.getValue(ParameterTypes.UserName) + ", " + timeString;
+		// 					if (model.getValue(ParameterTypes.Text) != null) {
+		// 						awarenessField = new ExtendedAwarenessElementArgument((ExtendedElementContainerInterface) recipient, ((ExtendedElementContainerInterface) recipient).getElementInfo().getChildElements().get(model.getValue(ParameterTypes.ElementId)), model.getValue(ParameterTypes.Text));
+		// 					} else if (model.getValue(ParameterTypes.Time) != null) {
+		// 						if (model.getValue(ParameterTypes.UserName) != null) {
+		// 							Date date = new Date(Long.parseLong(model.getValue(ParameterTypes.Time)));
+		// 							String timeString = date.toString();
+		// 							timeString = timeString.substring(4, 16);
+		// 							String authorAndTime = model.getValue(ParameterTypes.UserName) + ", " + timeString;
 
-									awarenessField = new ExtendedAwarenessElementArgument((ExtendedElementContainerInterface) recipient, ((ExtendedElementContainerInterface) recipient).getElementInfo().getChildElements().get(model.getValue(ParameterTypes.ElementId)), authorAndTime);
-								}
-							}
-							Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add Awareness-Field : predefined element (with text: " + model.getValue(ParameterTypes.Text) + " was created!", Logger.DEBUG);
+		// 							awarenessField = new ExtendedAwarenessElementArgument((ExtendedElementContainerInterface) recipient, ((ExtendedElementContainerInterface) recipient).getElementInfo().getChildElements().get(model.getValue(ParameterTypes.ElementId)), authorAndTime);
+		// 						}
+		// 					}
+		// 					Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add Awareness-Field : predefined element (with text: " + model.getValue(ParameterTypes.Text) + " was created!", Logger.DEBUG);
 
-							// Makes the Element Visible
-							((ExtendedElementContainerInterface) recipient).addExtendedElement(awarenessField, calculateNewExtendedElementPosition(((ExtendedElementContainerInterface) recipient), model.getValue(ParameterTypes.ElementId)));
+		// 					// Makes the Element Visible
+		// 					((ExtendedElementContainerInterface) recipient).addExtendedElement(awarenessField, calculateNewExtendedElementPosition(((ExtendedElementContainerInterface) recipient), model.getValue(ParameterTypes.ElementId)));
 
-							newRecipients.add(awarenessField);
+		// 					newRecipients.add(awarenessField);
 
-							Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add AwarenessElement to a Box. done!", Logger.DEBUG);
-						}
-					}
-				}
-			}
+		// 					Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add AwarenessElement to a Box. done!", Logger.DEBUG);
+		// 				}
+		// 			}
+		// 		}
+		// 	}
 		} else if (model.getType().equalsIgnoreCase("rating")) {
 			Logger.log("[lasad.gwt.client.ui.workspace.argumentmap.ArgumentMapMVCViewSession]: add Rating-Field", Logger.DEBUG);
 			// CREATE A NEW RATING ELEMENT

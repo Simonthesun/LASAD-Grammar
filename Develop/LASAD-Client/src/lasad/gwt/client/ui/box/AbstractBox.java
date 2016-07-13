@@ -123,7 +123,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	private Element outerMiddleRowLeftCell;
 
 	private Element westArea;
-	private BoxConnectorElement westConnector;
+	// private BoxConnectorElement westConnector;
 	private Element outerMiddleRowMiddleCell;
 	private Element innerGrid;
 	private Element innerGridTBody;
@@ -154,7 +154,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	private Element outerMiddleRowRightCell;
 	public Element eastArea;
 
-	private BoxConnectorElement eastConnector;
+	// private BoxConnectorElement eastConnector;
 	private Element outerBottomRow;
 	private Element outerBottomRowLeftCell;
 	private Element resizeCornerSW;
@@ -164,7 +164,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	private Element outerBottomRowRightCell;
 	private Element resizeCornerSE;
 	private Element rootElement; // Main element to make the box visible
-	private AbstractBoxHeaderElement boxHeading; // Header of the box. Present in all
+	// private AbstractBoxHeaderElement boxHeading; // Header of the box. Present in all
 	// boxes. Needed for the
 	// DragListener
 
@@ -177,7 +177,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	private Timer hoverTimer = new Timer() {
 		public void run() {
 			AbstractBox.this.setResizeCornerVisibility(false);
-			AbstractBox.this.boxHeading.setEditButtonVisibility(false);
+			// AbstractBox.this.boxHeading.setEditButtonVisibility(false);
 		}
 	};
 
@@ -215,16 +215,16 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		String height = config.getUiOption(ParameterTypes.Height);
 		
 		this.setSize(Integer.parseInt(width), Integer.parseInt(height));
-		this.title = ""; // config.getElementOption(ParameterTypes.Heading);
+		this.title = config.getElementOption(ParameterTypes.Heading);
 		this.color = "#FFFFFF"; // config.getUiOption(ParameterTypes.BackgroundColor);
-		// setBorder(config.getUiOption(ParameterTypes.Border));
+		setBorder(config.getUiOption(ParameterTypes.Border)); // This could be erased to get rid of borders
 
 		//boxHeading = new BoxHeaderElement(this, this.title,isR);
 		
-		boxHeading = createBoxHeaderElement(this, this.title,isR);
+		// boxHeading = createBoxHeaderElement(this, this.title,isR);
 		
-		boxHeading.render(boxContentDiv, 0);
-		ComponentHelper.doAttach(boxHeading);
+		// boxHeading.render(boxContentDiv, 0);
+		// ComponentHelper.doAttach(boxHeading);
 		
 	}
 	protected abstract AbstractBoxHeaderElement createBoxHeaderElement(AbstractBox correspondingBox, String title, boolean isReplay);
@@ -440,11 +440,11 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		// South
 		DOM.setStyleAttribute(southConnector.getElement(), "left", ((this.width - CONNECTOR_WIDTH) / 2 - CONNECTOR_HEIGHT) + "px");
 
-		// East
-		DOM.setStyleAttribute(eastConnector.getElement(), "top", ((this.height - CONNECTOR_WIDTH) / 2 - CONNECTOR_HEIGHT) + "px");
+		// // East
+		// DOM.setStyleAttribute(eastConnector.getElement(), "top", ((this.height - CONNECTOR_WIDTH) / 2 - CONNECTOR_HEIGHT) + "px");
 
-		// West
-		DOM.setStyleAttribute(westConnector.getElement(), "top", ((this.height - CONNECTOR_WIDTH) / 2 - CONNECTOR_HEIGHT) + "px");
+		// // West
+		// DOM.setStyleAttribute(westConnector.getElement(), "top", ((this.height - CONNECTOR_WIDTH) / 2 - CONNECTOR_HEIGHT) + "px");
 		
 		this.setVisible(true);
 	}
@@ -480,12 +480,12 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 			}
 		} else if (vName == ParameterTypes.RootElementId) {
 			this.checkForHighlight(model.getValue(ParameterTypes.UserName));
-			if (this.boxHeading != null) {
-				String elementID = model.getValue(ParameterTypes.RootElementId);
-				this.boxHeading.setRootElementID(elementID);
-				if(myDetails != null)
-					this.myDetails.setTitle(elementID + "-" + this.title);
-			}
+			// if (this.boxHeading != null) {
+			// 	String elementID = model.getValue(ParameterTypes.RootElementId);
+			// 	this.boxHeading.setRootElementID(elementID);
+			// 	if(myDetails != null)
+			// 		this.myDetails.setTitle(elementID + "-" + this.title);
+			// }
 		}
 	}
 
@@ -530,7 +530,6 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 					// Open LinkDialog
 					AbstractBox tmpBox = (AbstractBox) e.getData();
-					//CreateLinkDialog tmpDialog = new CreateLinkDialog(AbstractBox.this.getMap(), tmpBox, AbstractBox.this, e.getClientX() - myMap.getAbsoluteLeft() + myMap.getHScrollPosition(), e.getClientY() - myMap.getAbsoluteTop() + myMap.getVScrollPosition());
 					AbstractCreateLinkDialog tmpDialog = createLinkDialog(AbstractBox.this.getMap(), tmpBox, AbstractBox.this, e.getClientX() - myMap.getAbsoluteLeft() + myMap.getHScrollPosition(), e.getClientY() - myMap.getAbsoluteTop() + myMap.getVScrollPosition());
 					myMap.add(tmpDialog);
 					myMap.layout();
@@ -547,11 +546,9 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 							tData.setModel(AbstractBox.this.tData.getModel());
 	
 							// A Transcript Link already exists, just update the Values
-							//communicator.sendActionPackage(actionBuilder.updateTranscriptLink(getMap().getID(), connectedModel.getId(), tData));
 							sendUpdateTranscriptLinkToServer(getMap().getID(), connectedModel.getId(), tData);
 						} else {
 							// Create a new TranscriptLink
-							//communicator.sendActionPackage(new ActionPackage().addAction(actionBuilder.createTranscriptLink(getMap().getID(), String.valueOf(connectedModel.getId()), tData)));
 							sendCreateTranscriptLinkToServer(getMap().getID(), String.valueOf(connectedModel.getId()), tData);
 						}
 				}
@@ -564,9 +561,6 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 				e.getStatus().setStatus(true);
 
 				if (e.getDragSource().getData() instanceof AbstractBox) {
-//					if (myController != null) {
-//						myController = LASAD_Client.getMVCController(myMap.getID());
-//					}
 					if (getMyController() != null) {
 						//myController = LASAD_Client.getMVCController(myMap.getID());
 						setMyControllerFromLASADClient();
@@ -874,7 +868,6 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		this.northArea.setClassName("box-areas");
 		DOM.appendChild(outerTopRowMiddleCell, this.northArea);
 
-		//this.northConnector = new BoxConnectorElement(this, "north-connector");
 		this.northConnector = createBoxConnectorElement(this, "north-connector");
 		this.northConnector.render(northArea);
 		this.northConnector.getElement().getStyle().setCursor(Cursor.POINTER); 
@@ -898,10 +891,9 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		this.westArea.setClassName("box-areas");
 		DOM.appendChild(outerMiddleRowLeftCell, this.westArea);
 
-		//this.westConnector = new BoxConnectorElement(this, "west-connector");
-		this.westConnector = createBoxConnectorElement(this, "west-connector");
-		this.westConnector.render(westArea);
-		this.westConnector.getElement().getStyle().setCursor(Cursor.POINTER); 
+		// this.westConnector = createBoxConnectorElement(this, "west-connector");
+		// this.westConnector.render(westArea);
+		// this.westConnector.getElement().getStyle().setCursor(Cursor.POINTER); 
 
 		this.outerMiddleRowMiddleCell = DOM.createTD();
 		outerMiddleRowMiddleCell.setClassName("box-outerGrid-mmc");
@@ -915,10 +907,9 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		this.eastArea.setClassName("box-areas");
 		DOM.appendChild(outerMiddleRowRightCell, this.eastArea);
 
-		//this.eastConnector = new BoxConnectorElement(this, "east-connector");
-		this.eastConnector = createBoxConnectorElement(this, "east-connector");
-		this.eastConnector.render(eastArea);
-		this.eastConnector.getElement().getStyle().setCursor(Cursor.POINTER); 
+		// this.eastConnector = createBoxConnectorElement(this, "east-connector");
+		// this.eastConnector.render(eastArea);
+		// this.eastConnector.getElement().getStyle().setCursor(Cursor.POINTER); 
 
 		DOM.appendChild(outerGridTBody, outerMiddleRow);
 
@@ -939,7 +930,6 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		this.southArea.setClassName("box-areas");
 		DOM.appendChild(outerBottomRowMiddleCell, this.southArea);
 
-		//this.southConnector = new BoxConnectorElement(this, "south-connector");
 		this.southConnector = createBoxConnectorElement(this, "south-connector");
 		this.southConnector.render(southArea);
 		this.southConnector.getElement().getStyle().setCursor(Cursor.POINTER); 
@@ -1064,17 +1054,17 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	 * @param myMap
 	 */
 	protected void makeDraggable(GraphMap myMap) {
-		BoxDraggable d = new BoxDraggable(this, this.boxHeading);
-		d.setUseProxy(true);
-		d.setMoveAfterProxyDrag(false);
+		// BoxDraggable d = new BoxDraggable(this, this.boxHeading);
+		// d.setUseProxy(true);
+		// d.setMoveAfterProxyDrag(false);
 
-		// Remove the comments to use the concrete box instead of the proxy
-		// object while moving; not recommended because the connected curves /
-		// lines will be updated immediately as well.
-		// d.setUseProxy(false);
+		// // Remove the comments to use the concrete box instead of the proxy
+		// // object while moving; not recommended because the connected curves /
+		// // lines will be updated immediately as well.
+		// // d.setUseProxy(false);
 
-		d.setContainer(myMap);
-		d.addDragListener(new DragListener());
+		// d.setContainer(myMap);
+		// d.addDragListener(new DragListener());
 	}
 
 	protected void makeResizeable() {
@@ -1084,7 +1074,6 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 			@Override
 			public void resizeEnd(ResizeEvent re) {
 				super.resizeEnd(re);
-				//communicator.sendActionPackage(actionBuilder.updateBoxSize(getMap().getID(), connectedModel.getId(), width, height));
 				onClickSendUpdateBoxSizeToServer(getMap().getID(), connectedModel.getId(), width, height);
 			}
 		};
@@ -1236,7 +1225,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	public void setColor(String color) {
 		this.color = color;
-		DOM.setStyleAttribute(boxHeading.getElement(), "backgroundColor", color);
+		// DOM.setStyleAttribute(boxHeading.getElement(), "backgroundColor", color);
 
 		if(myDetails != null)
 			this.myDetails.setColor(color);
@@ -1252,22 +1241,22 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	}
 	
 	public void setHeaderFontSize(int fontSize){
-		if(this.boxHeading != null){
-			if(this.fontSize != fontSize){
-				changedFontSize = true;
-				previousHeaderHeight = this.fontSize+BORDER_HEIGHT;
-			}
+		// if(this.boxHeading != null){
+		// 	if(this.fontSize != fontSize){
+		// 		changedFontSize = true;
+		// 		previousHeaderHeight = this.fontSize+BORDER_HEIGHT;
+		// 	}
 
-			HEADER_HEIGHT = fontSize+3;
-			this.fontSize = fontSize;
-			this.boxHeading.getContentText().getStyle().setFontSize(fontSize,com.google.gwt.dom.client.Style.Unit.PX);
-			this.boxHeading.getContentText().getStyle().setHeight(fontSize+BORDER_HEIGHT/2,com.google.gwt.dom.client.Style.Unit.PX);
-			this.boxHeading.getElement().getStyle().setHeight(fontSize+BORDER_HEIGHT,com.google.gwt.dom.client.Style.Unit.PX);
+		// 	HEADER_HEIGHT = fontSize+3;
+		// 	this.fontSize = fontSize;
+		// 	this.boxHeading.getContentText().getStyle().setFontSize(fontSize,com.google.gwt.dom.client.Style.Unit.PX);
+		// 	this.boxHeading.getContentText().getStyle().setHeight(fontSize+BORDER_HEIGHT/2,com.google.gwt.dom.client.Style.Unit.PX);
+		// 	this.boxHeading.getElement().getStyle().setHeight(fontSize+BORDER_HEIGHT,com.google.gwt.dom.client.Style.Unit.PX);
 			
-			this.setSize(Math.max(this.boxHeading.getElement().getScrollWidth()+32, this.width), this.height);
+		// 	this.setSize(Math.max(this.boxHeading.getElement().getScrollWidth()+32, this.width), this.height);
 			
-			changedFontSize = false;
-		}
+		// 	changedFontSize = false;
+		// }
 	}
 
 	/**
@@ -1388,11 +1377,11 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	@Override
 	public void setFadedOut(boolean fadedOut) {
-		if (fadedOut) {
-			DOM.setStyleAttribute(boxHeading.getElement(), "backgroundColor", "#F9F9F9");
-		} else {
-			DOM.setStyleAttribute(boxHeading.getElement(), "backgroundColor", color);
-		}
+		// if (fadedOut) {
+		// 	DOM.setStyleAttribute(boxHeading.getElement(), "backgroundColor", "#F9F9F9");
+		// } else {
+		// 	DOM.setStyleAttribute(boxHeading.getElement(), "backgroundColor", color);
+		// }
 	}
 
 	public void setHeight(int height) {
@@ -1535,7 +1524,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	@Override
 	public void unselect() {
-		// DOM.setStyleAttribute(this.rootElement, "border", "none");
+		DOM.setStyleAttribute(this.rootElement, "border", "none");
 		this.selected = false;
 
 		//this.myMap.getMyArgumentMapSpace().changeSelectionDetailsPanelTo(new SelectionDetailsPanel(myMap));
