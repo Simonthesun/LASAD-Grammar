@@ -2,6 +2,7 @@ package lasad.gwt.client.ui.box;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import lasad.gwt.client.LASAD_Client;
@@ -17,6 +18,9 @@ import lasad.gwt.client.model.AbstractMVController;
 import lasad.gwt.client.model.AbstractUnspecifiedElementModel;
 import lasad.gwt.client.model.ElementInfo;
 import lasad.gwt.client.model.MVCViewRecipient;
+import lasad.gwt.client.model.organization.ArgumentModel;
+import lasad.gwt.client.model.organization.GrammarNode;
+import lasad.gwt.client.model.organization.LinkedBox;
 import lasad.gwt.client.ui.LASADBoxComponent;
 import lasad.gwt.client.ui.box.elements.AbstractBoxHeaderElement;
 import lasad.gwt.client.ui.box.helper.BoxConnectorElement;
@@ -81,6 +85,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 //	private MVController myController;
 
 	protected GraphMap myMap; // Reference to the corresponding map
+	private ArgumentModel argModel;
 
 	private Connector cn = null; // The connector needed to be able to create
 	// curves / lines
@@ -188,6 +193,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	 */
 	private AbstractBox(GraphMap map) {
 		this.myMap = map;
+		argModel = map.getArgModel();
 		this.initBoxElements();
 		this.setVisible(false);
 
@@ -210,6 +216,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	 */
 	private AbstractBox(GraphMap map, ElementInfo config, boolean isR) {
 		this(map);
+		argModel = map.getArgModel();
 		this.config = config;
 		String width = config.getUiOption(ParameterTypes.Width);
 		String height = config.getUiOption(ParameterTypes.Height);
@@ -1122,13 +1129,13 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	@Override
 	public void select() {
-		// Open selectionDetailsPanel only if the user is allowed to
-		if (isModificationAllowed()) {
-			DOM.setStyleAttribute(this.rootElement, "border", "1pt solid red");
-			this.selected = true;
-			if(myDetails != null)
-				this.myMap.getMyArgumentMapSpace().changeSelectionDetailsPanelTo(myDetails);
-		}
+		this.selected = true;
+		this.setHighlight(true);
+	}
+	
+	public void deselect() {
+		this.selected = false;
+		this.setHighlight(false);
 	}
 
 	/**
@@ -1324,13 +1331,48 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 			private void onClick(ComponentEvent be) {
 				AbstractBox.this.el().updateZIndex(1);
-
-				if (AbstractBox.this.selected) {
-					AbstractBox.this.selected = false;
-					AbstractBox.this.setHighlight(false);
+				
+/*				Vector<GrammarNode> nodes = argModel.getNodes();
+				boolean nodeSelected = false;
+				GrammarNode clickedNode = nodes.get(0);
+				
+				for (GrammarNode node : nodes) {
+					if (node.abstractBoxInNode(AbstractBox.this)) {
+						nodeSelected = true;
+						clickedNode = node;
+					}
+				}
+				
+				if (nodeSelected) {
+					List<Component> mapComponents = myMap.getItems();
+					Vector<AbstractBox> aboxes = new Vector<AbstractBox>();
+					Vector<AbstractBox> nodeBoxes = new Vector<AbstractBox>();
+					
+					for (Component mapComponent : mapComponents) {
+						if (mapComponent instanceof AbstractBox) {
+							aboxes.add((AbstractBox) mapComponent);
+						} 
+					}
+					
+					for (AbstractBox abox : aboxes) {
+						if (clickedNode.abstractBoxInNode(abox) || clickedNode.abstractWordInNode(abox)) {
+							nodeBoxes.add(abox);
+						}
+					}
+					
+					if (AbstractBox.this.selected) {
+						for (AbstractBox box : nodeBoxes) {
+							box.deselect();
+						}
+					} else {
+						for (AbstractBox box : nodeBoxes) {
+							box.select();
+						}
+					}
+				} else*/ if (AbstractBox.this.selected) {
+					AbstractBox.this.deselect();
 				} else {
-					AbstractBox.this.selected = true;
-					AbstractBox.this.setHighlight(true);
+					AbstractBox.this.select();
 				}
 			}
 

@@ -619,6 +619,8 @@ public class LASADActionReceiver {
 					
 					//Added by DSF, run setFontSize so new boxes get the right font size
 					argModel.setFontSize(argModel.getFontSize(), false);
+
+					argModel.setUpdate(true);
 				}
 
 				// If it's a relation, add it to the model
@@ -683,6 +685,8 @@ public class LASADActionReceiver {
 							autoOrganizer.updateSiblingLinks(link);
 						}
 					}
+
+					argModel.setUpdate(true);
 				}
 
 				// End Kevin Loughlin

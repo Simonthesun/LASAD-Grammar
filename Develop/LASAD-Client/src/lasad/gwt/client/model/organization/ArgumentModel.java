@@ -3,12 +3,14 @@ package lasad.gwt.client.model.organization;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import lasad.gwt.client.LASAD_Client;
 import lasad.gwt.client.communication.LASADActionSender;
 import lasad.gwt.client.communication.helper.ActionFactory;
 import lasad.gwt.client.logger.Logger;
 import lasad.gwt.client.model.argument.MVController;
+import lasad.gwt.client.model.organization.GrammarNode;
 import lasad.gwt.client.ui.box.AbstractBox;
 import lasad.gwt.client.ui.common.AbstractExtendedElement;
 import lasad.gwt.client.ui.common.elements.AbstractExtendedTextElement;
@@ -26,13 +28,17 @@ import com.extjs.gxt.ui.client.widget.Component;
 public class ArgumentModel
 {
 	private Set<ArgumentThread> argThreads;
+	private Vector<GrammarNode> nodes;
 	private int fontSize = 10;
 	private MVController controller;
+	private boolean updated;
 
 	public ArgumentModel(String mapID)
 	{
 		this.argThreads = new HashSet<ArgumentThread>();
+		this.nodes = new Vector<GrammarNode>();
 		controller = LASAD_Client.getMVCController(mapID);
+		this.updated = false;
 	}
 	
 	// By Darlan Santana Farias
@@ -188,6 +194,18 @@ public class ArgumentModel
 			argThread.removeLinksTo(removedBox);
 		}
 	}
+	
+	public void addNode(GrammarNode node) {
+		this.nodes.add(node);
+	}
+	
+	public void removeNode(GrammarNode node) {
+		this.nodes.remove(node);
+	}
+	
+	public Vector<GrammarNode> getNodes() {
+		return nodes;
+	}
 
 	public Set<LinkedBox> getBoxes()
 	{
@@ -325,5 +343,13 @@ public class ArgumentModel
 		}
 		buffer.append("\n***********\nEND OF MODEL\n***********\n");
 		return buffer.toString();
+	}
+	
+	public boolean getUpdated() {
+		return updated;
+	}
+	
+	public void setUpdate(boolean b) {
+		this.updated = b;
 	}
 }

@@ -46,16 +46,32 @@ public class NodeCreator {
 
 	public void createNode() {
 		if (checkAdjacent(getSelectedBoxes(map))) {
-			createFormFunction(mapInfo, getSelectedBoxes(map));
+			createForm(mapInfo, getSelectedBoxes(map));
+			createFunction(mapInfo, getSelectedBoxes(map));
+			
+			//GrammarNode node = new GrammarNode(map.getMyArgumentMapSpace(), true, false, sortWords(getSelectedBoxes(map)), )
+			//argModel.addNode(node);
 		}
 	}
 
-	public void createFormFunction(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords) {
+	public void createForm(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords) {
 		Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
 		ElementInfo form = boxes.get("Conclusion");
 		ElementInfo function = boxes.get("Refutation");
+		Map<String, ElementInfo> links = mapInfo.getElementsByType("relation");
+		ElementInfo link = links.get("Support");
+		
+		Vector<Integer> firstlast = new Vector<Integer>();
+		firstlast.add(selectedWords.get(0).getBoxID());
+		firstlast.add(selectedWords.get(selectedWords.size() - 1).getBoxID());
 		
 		communicator.sendActionPackage(actionBuilder.createBoxWithElements(form, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true)));
+	}
+	
+	public void createFunction(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords) {
+		Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
+		ElementInfo function = boxes.get("Refutation");
+		
 		communicator.sendActionPackage(actionBuilder.createBoxWithElements(function, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, false)));
 	}
 	
@@ -119,7 +135,7 @@ public class NodeCreator {
 		for (int i = 0; i < (words.size() - 1); i++) {
 			int j = i + 1;
 			
-			if (!(words.get(i).getRootID() == (words.get(j).getRootID() - 1))) {
+			if (words.get(i).getRootID() != (words.get(j).getRootID() - 1)) {
 				return false;
 			}
 		}

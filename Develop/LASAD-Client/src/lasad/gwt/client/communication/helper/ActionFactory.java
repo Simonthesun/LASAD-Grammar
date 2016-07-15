@@ -647,7 +647,32 @@ public class ActionFactory {
 		//p.addAction(this.getInstance().startAutoOrganization(mapID));
 		return p;
 	}
+	
+/*	public ActionPackage createBoxAndLinks(ElementInfo boxInfo, ElementInfo linkInfo, String mapID, int x, int y, Vector<Integer> ids) {
+		ActionPackage p = new ActionPackage();
+		
+		Action box = createBox(boxInfo, mapID, x, y);
+		p.addAction(box);
 
+		Vector<Action> boxelements = createBoxElementsAction(boxInfo, mapID);
+		if (boxelements.size() > 0) {
+			for (Action c : boxelements) {
+				p.addAction(c);
+			}
+		}
+
+		for (int id : ids) {
+			Vector<Action> link = createLinkWithElementsAction(linkInfo, mapID, "LAST-ID", Integer.toString(id), null);
+			if (link.size() > 0) {
+				for (Action c : link) {
+					p.addAction(c);
+				}
+			}
+		}
+		
+		return p;
+	}
+*/
 	public ActionPackage sendChatMessage(String mapID, String msg) {
 		ActionPackage p = new ActionPackage();
 		Action a = new Action(Commands.ChatMsg, Categories.Communication);
