@@ -9,7 +9,7 @@ import lasad.gwt.client.communication.LASADActionSender;
 import lasad.gwt.client.communication.helper.ActionFactory;
 import lasad.gwt.client.model.ElementInfo;
 import lasad.gwt.client.ui.common.AbstractExtendedElement;
-import lasad.gwt.client.ui.common.argument.elements.ExtendedAwarenessElementArgument;
+// import lasad.gwt.client.ui.common.argument.elements.ExtendedAwarenessElementArgument;
 import lasad.gwt.client.ui.common.argument.elements.ExtendedDropdownElementArgument;
 import lasad.gwt.client.ui.common.argument.elements.ExtendedRadioButtonElementArgument;
 import lasad.gwt.client.ui.common.argument.elements.ExtendedRatingElementArgument;
@@ -647,7 +647,7 @@ public class CreateModifyAndDeleteOntology extends ContentPanel {
 				if (el.getElementType().equalsIgnoreCase("text")) {
 					e = new ExtendedTextElementArgument(true, b, el);
 				} else if (el.getElementType().equalsIgnoreCase("awareness")) {
-					e = new ExtendedAwarenessElementArgument(b, el);
+					// e = new ExtendedAwarenessElementArgument(b, el);
 				} else if (el.getElementType().equalsIgnoreCase("rating")) {
 					e = new ExtendedRatingElementArgument(b, el, true);
 				} else if (el.getElementType().equalsIgnoreCase("transcript-link")) {
@@ -694,7 +694,7 @@ public class CreateModifyAndDeleteOntology extends ContentPanel {
 				if (el.getElementType().equalsIgnoreCase("text")) {
 					e = new ExtendedTextElementArgument(link, el);
 				} else if (el.getElementType().equalsIgnoreCase("awareness")) {
-					e = new ExtendedAwarenessElementArgument(link, el);
+					// e = new ExtendedAwarenessElementArgument(link, el);
 				} else if (el.getElementType().equalsIgnoreCase("rating")) {
 					e = new ExtendedRatingElementArgument(link, el, true);
 				} else if (el.getElementType().equalsIgnoreCase("dropdown")) {

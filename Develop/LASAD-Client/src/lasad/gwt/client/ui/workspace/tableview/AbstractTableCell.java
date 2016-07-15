@@ -72,7 +72,7 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 	
 	private ToolBar titleBar;
 	private LabelToolItem titleLabel;
-	private AwarenessElement awarenessElement;
+	// private AwarenessElement awarenessElement;
 	
 	private LayoutContainer cellBody;
 	private TableCellInfo tableCellInfo;
@@ -132,8 +132,8 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 		//***********************
 		// Bottom Bar
 		//***********************
-		awarenessElement = new AwarenessElement(new ElementInfo());
-		add(awarenessElement, new BorderLayoutData(LayoutRegion.SOUTH, 20));
+		// awarenessElement = new AwarenessElement(new ElementInfo());
+		// add(awarenessElement, new BorderLayoutData(LayoutRegion.SOUTH, 20));
 		
 	}
 	
@@ -221,10 +221,10 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 		
 		}
 	
-		if (zoom == TableZoomEnum.SIZE25 || zoom == TableZoomEnum.SIZE50) {
+		// if (zoom == TableZoomEnum.SIZE25 || zoom == TableZoomEnum.SIZE50) {
 			
-			setupToolTipColumn(builder, ChildElementTypeEnum.AWARENESS.toString().toUpperCase(), awarenessElement.getSummary());
-		}
+		// 	setupToolTipColumn(builder, ChildElementTypeEnum.AWARENESS.toString().toUpperCase(), awarenessElement.getSummary());
+		// }
 		
 		
 		builder.append("</table>");
@@ -680,7 +680,7 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 			Size size = AbstractMapTable.cellSize.get(TableZoomEnum.SIZE100);
 			setSize(size.width, size.height);
 			
-			setAwarenessVisible(true);
+			setAwarenessVisible(false);
 			
 		} else {
 			
@@ -873,21 +873,22 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 		RowData areaElementData = new RowData(0.95, 1, new Margins(1, 0, 1, 12));
 		RowData otherElementData = new RowData(0.95, 18, new Margins(1, 0, 1, 12));
 		
-		if ("awareness".equalsIgnoreCase(type)) {
+		// if ("awareness".equalsIgnoreCase(type)) {
 			
-			// UI View
-			if (zoom != TableZoomEnum.SIZE25) {
+		// 	// UI View
+		// 	if (zoom != TableZoomEnum.SIZE25) {
 				
-				setAwarenessVisible(true);
+		// 		setAwarenessVisible(false);
 				
-			} else {
+		// 	} else {
 				
-				setAwarenessVisible(false);
-			}
+		// 		setAwarenessVisible(false);
+		// 	}
 			
-			return awarenessElement;
+		// 	return awarenessElement;
 			
-		} else if ("text".equalsIgnoreCase(type)) {
+		// } else 
+		if ("text".equalsIgnoreCase(type)) {
 			
 			ElementInfo childInfo = info.getChildElements().get(id);
 //			TextElement textElement = new TextElement(childInfo);
@@ -1071,7 +1072,7 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 			
 			titleLabel.setLabel(getShortTitle(rootElementId + " . " + info.getElementOption(ParameterTypes.Heading)));
 			cellBody.setVisible(false);
-			setAwarenessVisible(true);
+			setAwarenessVisible(false);
 
 			initToolTip();
 		}
@@ -1081,7 +1082,7 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 			
 			titleLabel.setLabel(rootElementId + " . " + info.getElementOption(ParameterTypes.Heading));
 			cellBody.setVisible(true);
-			setAwarenessVisible(true);
+			setAwarenessVisible(false);
 
 			setToolTipVisible(false);
 		}
@@ -1091,7 +1092,7 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 			
 			titleLabel.setLabel(rootElementId + " . " + info.getElementOption(ParameterTypes.Heading));
 			cellBody.setVisible(true);
-			setAwarenessVisible(true);
+			setAwarenessVisible(false);
 			
 			setToolTipVisible(false);
 		}
@@ -1112,19 +1113,19 @@ public abstract class AbstractTableCell extends LayoutContainer implements MVCVi
 	
 	private void setAwarenessVisible(boolean visible) {
 		
-		if (awarenessElement != null) {
+		// if (awarenessElement != null) {
 			
-			if (visible) {
+		// 	if (visible) {
 				
-				add(awarenessElement, new BorderLayoutData(LayoutRegion.SOUTH, 20));
+		// 		add(awarenessElement, new BorderLayoutData(LayoutRegion.SOUTH, 20));
 				
-				layout();
+		// 		layout();
 				
-			} else {
+		// 	} else {
 				
-				awarenessElement.removeFromParent();
-			}
-		}
+		// 		awarenessElement.removeFromParent();
+		// 	}
+		// }
 	}
 	
 	

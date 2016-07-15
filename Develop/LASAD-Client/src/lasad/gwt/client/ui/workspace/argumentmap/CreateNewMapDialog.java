@@ -14,6 +14,9 @@ import lasad.gwt.client.model.organization.ArgumentGrid;
 import lasad.gwt.client.model.organization.ArgumentModel;
 import lasad.gwt.client.model.organization.ArgumentThread;
 import lasad.gwt.client.model.argument.MVCViewSession;
+import lasad.gwt.client.ui.box.AbstractBox;
+import lasad.gwt.client.ui.common.AbstractExtendedElement;
+import lasad.gwt.client.ui.common.elements.AbstractExtendedTextElement;
 import lasad.gwt.client.ui.workspace.graphmap.AbstractGraphMap;
 import lasad.gwt.client.ui.workspace.graphmap.GraphMap;
 import lasad.gwt.client.ui.workspace.graphmap.GraphMapSpace;
@@ -36,6 +39,7 @@ import com.extjs.gxt.ui.client.widget.layout.FormData;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.TextBox;
 
@@ -50,6 +54,7 @@ public class CreateNewMapDialog extends Window
 	private String mapID;
 	private GraphMapInfo mapInfo;
 	private AbstractGraphMap map;
+	private ArgumentModel argModel;
 
 	private FormData formData;
 
@@ -61,6 +66,7 @@ public class CreateNewMapDialog extends Window
 		this.mapID = space.getMyMap().getID();
 		this.mapInfo = mapInfo;
 		this.map = space.getMyMap();
+		this.argModel = map.getArgModel();
 	}
 
 	@Override
@@ -119,17 +125,21 @@ public class CreateNewMapDialog extends Window
 				// Get total width of boxes for the sentence.
 				int totalWidth = 0;
 				for (String s : words) {
-					int currentBoxWidth = 200;
+					int wordLength = s.length();
+					int currentBoxWidth = 50 + wordLength * 10;
 					totalWidth += currentBoxWidth;
 				}
 
 				int xLeft = CENTER_X - (int) Math.round(totalWidth / 2) + 100;
-				// if (xLeft < 2000) {
-				// 	xLeft = 2000;
-				// }
 				int yTop = CENTER_Y;
 
 				communicator.sendActionPackage(actionBuilder.createBoxesWithElements(info, mapID, xLeft, yTop, words));
+				/*Timer t = new Timer() {
+					public void run() {
+						argModel.setUpdate(false);
+					}
+				};
+				t.schedule(1000);*/
 
 				/*for (ArgumentThread argThread : argModel.getArgThreads()) {
 					ArgumentGrid grid = argThread.getGrid();

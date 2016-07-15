@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.extjs.gxt.ui.client.widget.Component;
+import com.google.gwt.user.client.Timer;
 
 import lasad.gwt.client.LASAD_Client;
 import lasad.gwt.client.communication.LASADActionSender;
@@ -66,6 +67,25 @@ public class NodeCreator {
 		firstlast.add(selectedWords.get(selectedWords.size() - 1).getBoxID());
 		
 		communicator.sendActionPackage(actionBuilder.createBoxWithElements(form, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true)));
+		communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), "LAST-ID", Integer.toString(selectedWords.firstElement().getBoxID())));
+		communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), "LAST-ID", Integer.toString(selectedWords.get(selectedWords.size() - 1).getBoxID())));
+		
+		/*Timer t = new Timer() {
+			public void run() {
+				int highestID = 1;
+				for (LinkedBox box : argModel.getBoxes()) {
+					if (box.getRootID() > highestID) {
+						highestID = box.getRootID();
+					}
+				}
+				
+				LinkedBox recentBox = argModel.getBoxByRootID(highestID);
+				
+				communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(recentBox.getBoxID()), Integer.toString(selectedWords.firstElement().getBoxID())));
+				argModel.setUpdate(false);
+			}
+		};
+		t.schedule(1000);*/
 	}
 	
 	public void createFunction(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords) {
@@ -73,18 +93,20 @@ public class NodeCreator {
 		ElementInfo function = boxes.get("Refutation");
 		
 		communicator.sendActionPackage(actionBuilder.createBoxWithElements(function, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, false)));
+		
+		/*Timer t = new Timer() {
+			public void run() {
+				argModel.setUpdate(false);
+			}
+		};
+		t.schedule(1000);*/
 	}
 	
 	public int calculateX(Vector<LinkedBox> selectedWords) {
-		double total = 0.0;
+		double avg = (selectedWords.firstElement().getXLeft() + selectedWords.get(selectedWords.size() - 1).getXLeft() + selectedWords.get(selectedWords.size() - 1).getWidth()) / 2;
+		double xleft = avg - (selectedWords.firstElement().getWidth() / 2);
 		
-		for (LinkedBox box : selectedWords) {
-			total = total + box.getXLeft();
-		}
-		
-		double avg = total / selectedWords.size();
-		
-		return (int) avg;
+		return (int) xleft;
 	}
 	
 	public int calculateY(Vector<LinkedBox> selectedWords, boolean form) {

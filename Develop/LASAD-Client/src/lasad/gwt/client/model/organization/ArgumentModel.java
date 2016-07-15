@@ -31,14 +31,14 @@ public class ArgumentModel
 	private Vector<GrammarNode> nodes;
 	private int fontSize = 10;
 	private MVController controller;
-	private boolean updated;
+//	private boolean updated;
 
 	public ArgumentModel(String mapID)
 	{
 		this.argThreads = new HashSet<ArgumentThread>();
 		this.nodes = new Vector<GrammarNode>();
 		controller = LASAD_Client.getMVCController(mapID);
-		this.updated = false;
+//		this.updated = false;
 	}
 	
 	// By Darlan Santana Farias
@@ -345,11 +345,11 @@ public class ArgumentModel
 		return buffer.toString();
 	}
 	
-	public boolean getUpdated() {
+/*	public boolean getUpdated() {
 		return updated;
 	}
 	
 	public void setUpdate(boolean b) {
 		this.updated = b;
-	}
+	}*/
 }
