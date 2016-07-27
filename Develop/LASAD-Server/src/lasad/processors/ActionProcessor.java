@@ -256,6 +256,7 @@ public class ActionProcessor extends ActionObservable {
 			switch (a.getCmd()) {
 			case UpdateElement:
 			case CreateElement:
+			case CreateElementSet:
 			case DeleteElement:
 				numActions++;
 				break;
@@ -274,6 +275,7 @@ public class ActionProcessor extends ActionObservable {
 			switch (a.getCmd()) {
 			case UpdateElement:
 			case CreateElement:
+			case CreateElementSet:
 			case DeleteElement:
 				a.addParameter(ParameterTypes.UserActionId, sessionID + time);
 				a.addParameter(ParameterTypes.NumActions, "" + numActions);

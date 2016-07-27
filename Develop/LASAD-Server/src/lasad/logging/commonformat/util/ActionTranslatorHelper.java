@@ -290,7 +290,7 @@ public class ActionTranslatorHelper {
 			guiAction.increaseCurrentActionsByOne();
 
 			// track/untrack the node/link/child
-			if (actionCommand.equals(Commands.CreateElement.getOldCommands())) {
+			if (actionCommand.equals(Commands.CreateElement.getOldCommands()) || actionCommand.equals(Commands.CreateElementSet.getOldCommands())) {
 				guiAction.addEueObject2CreateList(newObject);
 				addEUEObjectToTracker(objBasicDesc);
 			} else if (actionCommand.equals(Commands.UpdateElement.getOldCommands())) {
@@ -429,7 +429,7 @@ public class ActionTranslatorHelper {
 			guiAction.increaseCurrentActionsByOne();
 			//System.out.println(objBasicDesc);
 			// track/untrack the node/link/child
-			if (actionCommand.equals(Commands.CreateElement.getOldCommands())) {
+			if (actionCommand.equals(Commands.CreateElement.getOldCommands()) || actionCommand.equals(Commands.CreateElementSet.getOldCommands())) {
 				if(time != null){
 					guiAction.setCreationDate(Long.parseLong(time));
 				}

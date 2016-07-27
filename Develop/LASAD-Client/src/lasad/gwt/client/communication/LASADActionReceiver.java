@@ -614,13 +614,25 @@ public class LASADActionReceiver {
 					}
 
 					int width = Integer.parseInt(widthString);
+					
+					LinkedBox box = new LinkedBox(elementID, rootID, elementSubType, xLeft, yTop, width, DEFAULT_HEIGHT, canBeGrouped);
 
-					argModel.addArgThread(new ArgumentThread(new LinkedBox(elementID, rootID, elementSubType, xLeft, yTop, width, DEFAULT_HEIGHT, canBeGrouped)));
+					argModel.addArgThread(new ArgumentThread(box));
 					
 					//Added by DSF, run setFontSize so new boxes get the right font size
 					argModel.setFontSize(argModel.getFontSize(), false);
 
 					//argModel.setUpdate(true);
+					
+					Logger.log("TEST???", Logger.DEBUG);
+					
+					if (elementSubType.equals("Refutation")) {
+						argModel.getNodes().get(argModel.getNodes().size() - 1).setFunction(box);
+						Logger.log("ACTION RECEIVER: Function created", Logger.DEBUG);
+					} else if (elementSubType.equals("Conclusion")) {
+						argModel.getNodes().get(argModel.getNodes().size() - 1).setForm(box);
+						Logger.log("ACTION RECEIVER: Form created", Logger.DEBUG);
+					}
 				}
 
 				// If it's a relation, add it to the model
@@ -1029,11 +1041,15 @@ public class LASADActionReceiver {
 					}
 
 					int width = Integer.parseInt(widthString);
+					
+					LinkedBox box = new LinkedBox(elementID, rootID, elementSubType, xLeft, yTop, width, DEFAULT_HEIGHT, canBeGrouped);
 
-					argModel.addArgThread(new ArgumentThread(new LinkedBox(elementID, rootID, elementSubType, xLeft, yTop, width, DEFAULT_HEIGHT, canBeGrouped)));
+					argModel.addArgThread(new ArgumentThread(box));
 					
 					//Added by DSF, run setFontSize so new boxes get the right font size
 					argModel.setFontSize(argModel.getFontSize(), false);
+					
+					//HERE WAS WHERE IT WAS
 				}
 
 				// If it's a relation, add it to the model
@@ -1339,6 +1355,7 @@ public class LASADActionReceiver {
 			init.finishInitialization(a);
 			break;
 		case CreateElement:
+		case CreateElementSet:
 		case UpdateElement:
 		case DeleteElement:
 		case ChangeFontSize:

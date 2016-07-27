@@ -1321,9 +1321,9 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 			private void onClick(ComponentEvent be) {
 				AbstractBox.this.el().updateZIndex(1);
 				
-/*				Vector<GrammarNode> nodes = argModel.getNodes();
+				Vector<GrammarNode> nodes = argModel.getNodes();
 				boolean nodeSelected = false;
-				GrammarNode clickedNode = nodes.get(0);
+				GrammarNode clickedNode = null;
 				
 				for (GrammarNode node : nodes) {
 					if (node.abstractBoxInNode(AbstractBox.this)) {
@@ -1358,10 +1358,12 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 							box.select();
 						}
 					}
-				} else*/ if (AbstractBox.this.selected) {
-					AbstractBox.this.deselect();
 				} else {
-					AbstractBox.this.select();
+					if (AbstractBox.this.selected) {
+						AbstractBox.this.deselect();
+					} else {
+						AbstractBox.this.select();
+					}
 				}
 			}
 

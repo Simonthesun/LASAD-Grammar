@@ -658,7 +658,49 @@ public class ActionFactory {
 		return p;
 	}
 	
-/*	public ActionPackage createBoxAndLinks(ElementInfo boxInfo, ElementInfo linkInfo, String mapID, int x, int y, Vector<Integer> ids) {
+	public ActionPackage createBoxAnd2Links(ElementInfo boxInfo, ElementInfo linkInfo, String mapID, int x, int y, String end1, String end2) {
+		ActionPackage p = new ActionPackage();
+		Action a = createBox(boxInfo, mapID, x, y);
+		p.addAction(a);
+
+		Vector<Action> b = createBoxElementsAction(boxInfo, mapID);
+		if (b.size() > 0) {
+			for (Action c : b) {
+				p.addAction(c);
+			}
+		}
+
+		Vector<Action> c = createLinkWithElementsAction(linkInfo, mapID, "LAST-ID", end1, null);
+		if (c.size() > 0) {
+			for (Action d : c) {
+				p.addAction(d);
+			}
+		}
+		
+		Vector<Action> c2 = createLinkWithElementsAction(linkInfo, mapID, "SECOND-LAST-ID", end2, null);
+		if (c.size() > 0) {
+			for (Action d : c2) {
+				p.addAction(d);
+			}
+		}
+
+		//Action a1 = createBox(boxInfo, mapID, x, y);
+		//p.addAction(this.getInstance().startAutoOrganization(mapID));
+		return p;
+	}
+	
+	public Action createLinkSet(ElementInfo link, String mapID, String start, Vector<String> ends) {
+		Action a = new Action(Commands.CreateElementSet, Categories.Map);
+//		Action a = new Action("CREATE-ELEMENT", "MAP");
+		a.addParameter(ParameterTypes.Type, link.getElementType());
+		a.addParameter(ParameterTypes.MapId, mapID);
+		a.addParameter(ParameterTypes.ElementId, String.valueOf(link.getElementID()));
+		a.addParameter(ParameterTypes.Parent, start);
+		a.addParameterVector(ParameterTypes.Parent, ends);
+		return a;
+	}
+	
+	public ActionPackage createBoxAndLinks(ElementInfo boxInfo, ElementInfo linkInfo, String mapID, int x, int y, Vector<String> ids) {
 		ActionPackage p = new ActionPackage();
 		
 		Action box = createBox(boxInfo, mapID, x, y);
@@ -671,18 +713,12 @@ public class ActionFactory {
 			}
 		}
 
-		for (int id : ids) {
-			Vector<Action> link = createLinkWithElementsAction(linkInfo, mapID, "LAST-ID", Integer.toString(id), null);
-			if (link.size() > 0) {
-				for (Action c : link) {
-					p.addAction(c);
-				}
-			}
-		}
+		Action links = createLinkSet(linkInfo, mapID, "LAST-ID", ids);
+		p.addAction(links);
 		
 		return p;
 	}
-*/
+
 	public ActionPackage sendChatMessage(String mapID, String msg) {
 		ActionPackage p = new ActionPackage();
 		Action a = new Action(Commands.ChatMsg, Categories.Communication);

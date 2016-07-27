@@ -128,7 +128,13 @@ public class FeedbackActionProcessor extends AbstractActionObserver implements A
 				if ("LAST-ID".equalsIgnoreCase(p)) {
 					elementID = myServer.currentState.lastTopLevelElementID;
 				}
-			} else {
+			} 
+			else if (p.equalsIgnoreCase("SECOND-LAST-ID")) {
+				if ("SECOND-LAST-ID".equalsIgnoreCase(p)) {
+					elementID = myServer.currentState.secondLastTopLevelElementID;
+				}
+			}
+			else {
 				elementID = Integer.parseInt(p);
 			}
 

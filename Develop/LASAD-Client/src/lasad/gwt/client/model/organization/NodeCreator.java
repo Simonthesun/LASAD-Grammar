@@ -47,45 +47,28 @@ public class NodeCreator {
 
 	public void createNode() {
 		if (checkAdjacent(getSelectedBoxes(map))) {
+			GrammarNode node = new GrammarNode(map.getMyArgumentMapSpace(), true, false, sortWords(getSelectedBoxes(map)));
+			argModel.addNode(node);
+			
 			createForm(mapInfo, getSelectedBoxes(map));
 			createFunction(mapInfo, getSelectedBoxes(map));
 			
-			//GrammarNode node = new GrammarNode(map.getMyArgumentMapSpace(), true, false, sortWords(getSelectedBoxes(map)), )
-			//argModel.addNode(node);
+			deselectAllBoxes(map);
 		}
 	}
 
 	public void createForm(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords) {
 		Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
 		ElementInfo form = boxes.get("Conclusion");
-		ElementInfo function = boxes.get("Refutation");
 		Map<String, ElementInfo> links = mapInfo.getElementsByType("relation");
 		ElementInfo link = links.get("Support");
 		
-		Vector<Integer> firstlast = new Vector<Integer>();
-		firstlast.add(selectedWords.get(0).getBoxID());
-		firstlast.add(selectedWords.get(selectedWords.size() - 1).getBoxID());
+		Vector<String> firstlast = new Vector<String>();
+		firstlast.add(Integer.toString(selectedWords.get(0).getBoxID()));
+		firstlast.add(Integer.toString(selectedWords.get(selectedWords.size() - 1).getBoxID()));
 		
-		communicator.sendActionPackage(actionBuilder.createBoxWithElements(form, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true)));
-		communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), "LAST-ID", Integer.toString(selectedWords.firstElement().getBoxID())));
-		communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), "LAST-ID", Integer.toString(selectedWords.get(selectedWords.size() - 1).getBoxID())));
-		
-		/*Timer t = new Timer() {
-			public void run() {
-				int highestID = 1;
-				for (LinkedBox box : argModel.getBoxes()) {
-					if (box.getRootID() > highestID) {
-						highestID = box.getRootID();
-					}
-				}
-				
-				LinkedBox recentBox = argModel.getBoxByRootID(highestID);
-				
-				communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(recentBox.getBoxID()), Integer.toString(selectedWords.firstElement().getBoxID())));
-				argModel.setUpdate(false);
-			}
-		};
-		t.schedule(1000);*/
+		communicator.sendActionPackage(actionBuilder.createBoxAndLinks(form, link, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true), firstlast));
+		//communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), "SECOND-LAST-ID", Integer.toString(selectedWords.get(selectedWords.size() - 1).getBoxID())));
 	}
 	
 	public void createFunction(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords) {
@@ -104,7 +87,7 @@ public class NodeCreator {
 	
 	public int calculateX(Vector<LinkedBox> selectedWords) {
 		double avg = (selectedWords.firstElement().getXLeft() + selectedWords.get(selectedWords.size() - 1).getXLeft() + selectedWords.get(selectedWords.size() - 1).getWidth()) / 2;
-		double xleft = avg - (selectedWords.firstElement().getWidth() / 2);
+		double xleft = avg - 100;
 		
 		return (int) xleft;
 	}
@@ -115,9 +98,9 @@ public class NodeCreator {
 		double y;
 		
 		if (form) {
-			y = wordY + (1.5 * selectedWords.firstElement().getHeight());
-		} else {
 			y = wordY - (1.5 * selectedWords.firstElement().getHeight());
+		} else {
+			y = wordY + (1.5 * selectedWords.firstElement().getHeight());
 		}
 		
 		return (int) y;
@@ -188,5 +171,20 @@ public class NodeCreator {
 		}
 		
 		return selected;
+	}
+	
+	public void deselectAllBoxes(AbstractGraphMap map) {
+		Vector<AbstractBox> aboxes = new Vector<AbstractBox>();
+		List<Component> mapComponents = map.getItems();
+		
+		for (Component mapComponent : mapComponents) {
+			if (mapComponent instanceof AbstractBox) {
+				aboxes.add((AbstractBox) mapComponent);
+			} 
+		}
+		
+		for (AbstractBox abox : aboxes) {
+			abox.deselect();
+		}
 	}
 }

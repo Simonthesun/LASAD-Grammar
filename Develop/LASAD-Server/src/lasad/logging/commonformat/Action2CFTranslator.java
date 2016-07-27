@@ -177,7 +177,9 @@ public class Action2CFTranslator {
 				|| actionCommand
 						.equalsIgnoreCase(Commands.UpdateElement.getOldCommands())
 				|| actionCommand
-						.equalsIgnoreCase(Commands.DeleteElement.getOldCommands());
+						.equalsIgnoreCase(Commands.DeleteElement.getOldCommands())
+				|| actionCommand
+						.equalsIgnoreCase(Commands.CreateElementSet.getOldCommands());
 		return isCreateUpdateDelete;
 	}
 	

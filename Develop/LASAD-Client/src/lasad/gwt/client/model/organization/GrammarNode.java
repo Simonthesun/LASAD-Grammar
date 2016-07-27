@@ -1,7 +1,7 @@
 package lasad.gwt.client.model.organization;
 
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Vector;
 
 import lasad.gwt.client.model.organization.ArgumentGrid;
 import lasad.gwt.client.model.organization.ArgumentModel;
@@ -24,9 +24,9 @@ public class GrammarNode {
 	
 	private LinkedBox form;
 	private LinkedBox function;
-	private Set<LinkedBox> words;
+	private Vector<LinkedBox> words;
 
-	public GrammarNode(GraphMapSpace space, boolean root, boolean single, Set<LinkedBox> words, LinkedBox form, LinkedBox function) {
+	public GrammarNode(GraphMapSpace space, boolean root, boolean single, Vector<LinkedBox> words, LinkedBox form, LinkedBox function) {
 		this.space = space;
 		this.map = space.getMyMap();
 
@@ -41,6 +41,22 @@ public class GrammarNode {
 
 		this.selected = false;
 	}
+	
+	public GrammarNode(GraphMapSpace space, boolean root, boolean single, Vector<LinkedBox> words) {
+		this.space = space;
+		this.map = space.getMyMap();
+
+		this.root = root;
+		this.single = single;
+
+		//ArgumentModel argModel = map.getArgModel();
+
+		this.form = null;
+		this.function = null;
+		this.words = words;
+
+		this.selected = false;
+	}
 
 	public LinkedBox getForm() {
 		return form;
@@ -49,8 +65,9 @@ public class GrammarNode {
 	public LinkedBox getFunction() {
 		return function;
 	}
+	
 
-	public Set<LinkedBox> getWords() {
+	public Vector<LinkedBox> getWords() {
 		return words;
 	}
 
@@ -65,8 +82,16 @@ public class GrammarNode {
 	public boolean getSelected() {
 		return selected;
 	}
+	
+	public void setForm(LinkedBox box) {
+		this.form = box;
+	}
+	
+	public void setFunction(LinkedBox box) {
+		this.function = box;
+	}
 
-	public void setWords(Set<LinkedBox> words) {
+	public void setWords(Vector<LinkedBox> words) {
 		this.words = words;
 	}
 
@@ -82,8 +107,8 @@ public class GrammarNode {
 		this.selected = selected;
 	}
 	
-	public Set<Integer> getBoxIDs() {
-		HashSet<Integer> ids = new HashSet<Integer>();
+	public Vector<Integer> getBoxIDs() {
+		Vector<Integer> ids = new Vector<Integer>();
 		
 		for (LinkedBox word : words) {
 			ids.add(word.getBoxID());

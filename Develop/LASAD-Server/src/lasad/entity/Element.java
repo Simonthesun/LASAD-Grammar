@@ -71,6 +71,9 @@ public class Element {
 							addParentMapping(con, id, this.currentServerState.lastTopLevelElementID);
 						}
 					}
+					else if (s.equalsIgnoreCase("SECOND-LAST-ID")) {
+						addParentMapping(con, id, this.currentServerState.secondLastTopLevelElementID);
+					}
 					else {
 						addParentMapping(con, id, Integer.parseInt(s));
 					}

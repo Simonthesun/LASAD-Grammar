@@ -381,6 +381,9 @@ public class MapController {
 					p.setValue(myServer.currentState.secondLastTopLevelElementID + "");
 				}
 			}
+			else if ("SECOND-LAST-ID".equalsIgnoreCase(p.getValue())) {
+				p.setValue(myServer.currentState.secondLastTopLevelElementID + "");
+			}
 
 			// Replace CURRENT-TIME of time parameters
 			else if ("CURRENT-TIME".equalsIgnoreCase(p.getValue())) {

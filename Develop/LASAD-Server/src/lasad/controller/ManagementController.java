@@ -230,6 +230,9 @@ public class ManagementController {
 			case CreateElement:
 				createActions.put(Integer.parseInt(action.getParameterValue(ParameterTypes.Id)), action);
 				break;
+			case CreateElementSet:
+				createActions.put(Integer.parseInt(action.getParameterValue(ParameterTypes.Id)), action);
+				break;
 			case DeleteElement:
 				createActions.remove(Integer.parseInt(action.getParameterValue(ParameterTypes.Id)));
 				break;

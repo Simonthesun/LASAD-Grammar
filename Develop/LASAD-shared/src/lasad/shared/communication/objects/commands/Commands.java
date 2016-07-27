@@ -49,6 +49,7 @@ public enum Commands{
 	UserList("UserList"), 
 	None("None"),
 	CreateElement("CreateElement"),
+	CreateElementSet("CreateElementSet"),
 	ImportFinished("ImportFinished"),
 	ChatMsg("ChatMsg"), 
 	GetTemplates("GetTemplates"),
