@@ -338,8 +338,9 @@ public class ManagementActionProcessor extends AbstractActionObserver implements
 	 */
 	private void processCreateAndJoinMap(Action a, User u) {
 		if (Map.getMapID(a.getParameterValue(ParameterTypes.MapName)) == -1) {
-			Map m = new Map(a.getParameterValue(ParameterTypes.MapName), Template.getTemplateID(a
-					.getParameterValue(ParameterTypes.Template)), u.getUserID(), null);
+			Map m = new Map(a.getParameterValue(ParameterTypes.MapName), 5, u.getUserID(), null);
+			// Map m = new Map(a.getParameterValue(ParameterTypes.MapName), Template.getTemplateID(a
+			// 		.getParameterValue(ParameterTypes.Template)), u.getUserID(), null);
 			m.saveToDatabase(aproc);
 			if(a.getParameterValue(ParameterTypes.BackgroundImageURL)!= null )
 			{

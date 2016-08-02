@@ -1,8 +1,15 @@
 package lasad.processors.specific;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
+import lasad.Config;
+import lasad.database.DatabaseConnectionHandler;
 import lasad.controller.ClientCommunicationController;
 import lasad.controller.ManagementController;
 import lasad.controller.UserManagementController;
@@ -54,6 +61,70 @@ public class LoginActionProcessor extends AbstractActionObserver implements Acti
 		return returnValue;
 	}
 
+	// By Judy
+	// Able to create map without selecting ontology and template
+	private String addOntologyToAction(Action a) {
+		
+		String ontology = null;
+		// String template = null;
+
+		Connection con = null;
+		ResultSet rs = null;
+		PreparedStatement getOntology = null;
+
+		try {
+			con = DatabaseConnectionHandler.getConnection(LoginActionProcessor.class);			
+			getOntology = con.prepareStatement("SELECT xmlConfig FROM "+Config.dbName+".ontologies WHERE name = \"Modified-Beardsley-Freeman-Model\" ;");
+			rs = getOntology.executeQuery();			
+			if(rs.next()) {
+				ontology = rs.getString("xmlConfig");
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try { rs.close(); } catch (Exception e) { /* ignored */ }
+    		try { getOntology.close(); } catch (Exception e) { /* ignored */ }
+			if(con != null) {
+				DatabaseConnectionHandler.closeConnection(LoginActionProcessor.class, con);
+			}
+		}
+		return ontology;
+	}
+
+	// By Judy
+	// Able to create map without selecting ontology and template
+	private String addTemplateToAction(Action a) {
+
+		String template = null;
+		Connection con = null;
+		ResultSet rs = null;
+		PreparedStatement getTemplate = null; 
+
+		try {
+			con = DatabaseConnectionHandler.getConnection(LoginActionProcessor.class);			
+			getTemplate = con.prepareStatement("SELECT xmlConfig FROM "+Config.dbName+".templates WHERE name = \"MBF-Model-Template\" ;");
+			rs = getTemplate.executeQuery();
+			if(rs.next()) {
+				template = rs.getString("xmlConfig");
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try { rs.close(); } catch (Exception e) { /* ignored */ }
+    		try { getTemplate.close(); } catch (Exception e) { /* ignored */ }
+			if(con != null) {
+				DatabaseConnectionHandler.closeConnection(LoginActionProcessor.class, con);
+			}
+		}
+		return template;
+	}
+
 	/**
 	 * check if the username and pwd are right or not and if they are used or not if the username or pwd is wrong,feed back to the
 	 * user if they are in use, feed back to user too otherwise log in successfully
@@ -63,8 +134,12 @@ public class LoginActionProcessor extends AbstractActionObserver implements Acti
 	 * @author ?
 	 */
 	private void processLogin(Action a, String sessionID) throws SQLException {
-		synchronized (ActionProcessor.mapUsersLock) {
+		synchronized (ActionProcessor.mapUsersLock) {			
+
 			Logger.debugLog("Enable lock mapUsersLock from processLogin Part");
+
+			String ontology = addOntologyToAction(a);
+			String template = addTemplateToAction(a);
 
 			// Returns in any case (login successful or not) a new User.
 			// However, if
@@ -117,7 +192,7 @@ public class LoginActionProcessor extends AbstractActionObserver implements Acti
 				// Username not in use, everything ok
 				u.setSessionID(sessionID);
 
-				ActionPackage ap = ActionPackageFactory.confirmLogin(u.getNickname(), u.getRole());
+				ActionPackage ap = ActionPackageFactory.confirmLogin(u.getNickname(), u.getRole(), ontology, template);
 				Logger.doCFLogging(ap);
 				ManagementController.addToUsersActionQueue(ap, sessionID);
 				Logger.log("Login successful. Username: " + u.getNickname() + ", Role: " + u.getRole());
