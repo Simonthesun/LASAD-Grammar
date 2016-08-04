@@ -221,12 +221,12 @@ public class LASADActionReceiver {
 
 					LoadingLoginDialogue.getInstance().closeLoadingScreen();
 
-					myLoginTab.getMapLoginPanel().updateOverviews();
+					// myLoginTab.getMapLoginPanel().updateOverviews();
 					
-					if (LASAD_Client.getInstance().urlParameterConfig.isAutoLogin() && LASAD_Client.getInstance().urlParameterConfig.getMapId() != null){
-						LoadingMapDialogue.getInstance().showLoadingScreen();
-						LASADActionSender.getInstance().sendActionPackage(ActionFactory.getInstance().joinMap(LASAD_Client.getInstance().urlParameterConfig.getMapId()));
-					}
+					// if (LASAD_Client.getInstance().urlParameterConfig.isAutoLogin() && LASAD_Client.getInstance().urlParameterConfig.getMapId() != null){
+					// 	LoadingMapDialogue.getInstance().showLoadingScreen();
+					// 	LASADActionSender.getInstance().sendActionPackage(ActionFactory.getInstance().joinMap(LASAD_Client.getInstance().urlParameterConfig.getMapId()));
+					// }
 					
 					// Receive current version of the server. Parameter is specified in server.cfg file
 					// with name = "Server-Version"
@@ -234,6 +234,17 @@ public class LASADActionReceiver {
 					if (srvVersionParam != null && !"".equals(srvVersionParam)) {
 						LASADStatusBar.getInstance().setServerVersion(srvVersionParam);
 					}
+
+					// By Judy Kong
+					// Create map session right after logging in
+					Action createAndJoin = new Action(Commands.CreateAndJoin, Categories.Management);
+					createAndJoin.addParameter(ParameterTypes.MapName, "Grammar App");
+					createAndJoin.addParameter(ParameterTypes.Ontology, a.getParameterValue(ParameterTypes.Ontology));
+					createAndJoin.addParameter(ParameterTypes.Template, a.getParameterValue(ParameterTypes.Template));
+					ActionPackage ap = new ActionPackage();
+					ap.addAction(createAndJoin);
+					LASADActionSender communicator = LASADActionSender.getInstance();
+					communicator.sendActionPackage(ap);
 					
 				} else if (a.getParameterValue(ParameterTypes.Status).equals("DENIED")) {
 					LASAD_Client.getInstance().setAuthed(false);
@@ -295,10 +306,12 @@ public class LASADActionReceiver {
 
 				mapInfo.setTitle(a.getParameterValue(ParameterTypes.MapName));
 
-				mapInfo.setOntologyName(a.getParameterValue(ParameterTypes.OntologyName));
+				mapInfo.setOntologyName("Modified-Beardsley-Freeman-Model");
+				// mapInfo.setOntologyName(a.getParameterValue(ParameterTypes.OntologyName));
 				mapInfo.setXmlOntology(a.getParameterValue(ParameterTypes.Ontology));
 
-				mapInfo.setTemplateName(a.getParameterValue(ParameterTypes.TemplateName));
+				mapInfo.setTemplateName("MBF-Model-Template");
+				// mapInfo.setTemplateName(a.getParameterValue(ParameterTypes.TemplateName));
 				mapInfo.setTemplateTitle(a.getParameterValue(ParameterTypes.TemplateTitle));
 				mapInfo.setXmlTemplate(a.getParameterValue(ParameterTypes.Template));
 

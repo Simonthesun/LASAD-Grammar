@@ -55,7 +55,7 @@ public class ActionPackageFactory {
 		return createActionPackage(a);
 	}
 
-	public static ActionPackage confirmLogin(String nickname, String role) {
+	public static ActionPackage confirmLogin(String nickname, String role, String ontology, String template) {
 
 		Action a = new Action(Commands.Login, Categories.Auth);
 //		Action a = new Action("LOGIN", "AUTH");
@@ -64,6 +64,9 @@ public class ActionPackageFactory {
 		a.addParameter(ParameterTypes.Role, role);
 		a.addParameter(ParameterTypes.ServerVersion, Server.getInstance().conf.parameters.get("Server-Version"));
 		
+		a.addParameter(ParameterTypes.Ontology, ontology);
+		a.addParameter(ParameterTypes.Template, template);
+
 		return createActionPackage(a);
 	}
 
