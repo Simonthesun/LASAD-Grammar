@@ -16,44 +16,38 @@ public class GrammarNode {
 
 	boolean selected;
 
-	boolean root;
-	boolean single;
-
 	private GraphMapSpace space;
 	private AbstractGraphMap map;
 	
 	private LinkedBox form;
 	private LinkedBox function;
 	private Vector<LinkedBox> words;
+	private Vector<GrammarNode> subNodes; 
 
-	public GrammarNode(GraphMapSpace space, boolean root, boolean single, Vector<LinkedBox> words, LinkedBox form, LinkedBox function) {
+	public GrammarNode(GraphMapSpace space, Vector<LinkedBox> words, Vector<GrammarNode> subNodes, LinkedBox form, LinkedBox function) {
 		this.space = space;
 		this.map = space.getMyMap();
-
-		this.root = root;
-		this.single = single;
 
 		//ArgumentModel argModel = map.getArgModel();
 
 		this.form = form;
 		this.function = function;
 		this.words = words;
+		this.subNodes = subNodes;
 
 		this.selected = false;
 	}
 	
-	public GrammarNode(GraphMapSpace space, boolean root, boolean single, Vector<LinkedBox> words) {
+	public GrammarNode(GraphMapSpace space, Vector<LinkedBox> words, Vector<GrammarNode> subNodes) {
 		this.space = space;
 		this.map = space.getMyMap();
-
-		this.root = root;
-		this.single = single;
 
 		//ArgumentModel argModel = map.getArgModel();
 
 		this.form = null;
 		this.function = null;
 		this.words = words;
+		this.subNodes = subNodes;
 
 		this.selected = false;
 	}
@@ -70,15 +64,25 @@ public class GrammarNode {
 	public Vector<LinkedBox> getWords() {
 		return words;
 	}
+	
+	public Vector<GrammarNode> getSubNodes() {
+		return subNodes;
+	}
 
 	public boolean isRoot() {
-		return root;
+		if (subNodes == null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public boolean isSingle() {
-		return single;
+/*	public boolean isSingle() {
+		if (words == null && subNodes.size() == 1) {
+			return true;
+		} else if ()
 	}
-
+*/
 	public boolean getSelected() {
 		return selected;
 	}
@@ -94,20 +98,24 @@ public class GrammarNode {
 	public void setWords(Vector<LinkedBox> words) {
 		this.words = words;
 	}
+	
+	public void setSubNodes(Vector<GrammarNode> nodes) {
+		this.subNodes = nodes;
+	}
 
-	public void setRoot(boolean root) {
+/*	public void setRoot(boolean root) {
 		this.root = root;
 	}
 
 	public void setSingle(boolean single) {
 		this.single = single;
 	}
-
+*/
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 	
-	public Vector<Integer> getBoxIDs() {
+	public Vector<Integer> getAllBoxIDs() {
 		Vector<Integer> ids = new Vector<Integer>();
 		
 		for (LinkedBox word : words) {
@@ -116,6 +124,12 @@ public class GrammarNode {
 		
 		ids.add(form.getBoxID());
 		ids.add(function.getBoxID());
+		
+		if (subNodes != null) {
+			for (GrammarNode subNode : subNodes) {
+				ids.addAll(subNode.getAllBoxIDs());
+			}
+		}
 		
 		return ids;
 	}
@@ -130,7 +144,7 @@ public class GrammarNode {
 		return false;
 	}
 	
-	public boolean boxInNode(LinkedBox box) {
+	public boolean boxIsFormFunction(LinkedBox box) {
 		if (box.getBoxID() == form.getBoxID() || box.getBoxID() == function.getBoxID()) {
 			return true;
 		} else {
@@ -148,12 +162,56 @@ public class GrammarNode {
 		return false;
 	}
 	
-	public boolean abstractBoxInNode(AbstractBox box) {
+	public boolean abstractBoxIsFormFunction(AbstractBox box) {
 		if (box.getConnectedModel().getId() == form.getBoxID() || box.getConnectedModel().getId() == function.getBoxID()) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean containsBox(LinkedBox box) {
+		Vector<Integer> allIDs = getAllBoxIDs();
+		
+		for (int i : allIDs) {
+			if (box.getBoxID() == i) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean containsAbstractBox(AbstractBox box) {
+		Vector<Integer> allIDs = getAllBoxIDs();
+		
+		for (int i : allIDs) {
+			if (box.getConnectedModel().getId() == i) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean nodeInNode(GrammarNode node) {
+		for (GrammarNode compare : subNodes) {
+			if (compare == node) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public Vector<LinkedBox> getAllWords() {
+		Vector<LinkedBox> allWords = getWords();
+		
+		for (GrammarNode subNode : getSubNodes()) {
+			allWords.addAll(subNode.getAllWords());
+		}
+		
+		return allWords;
 	}
 
 }

@@ -92,7 +92,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 
 	private String title; // Title of the box, which appears in the header
 	private String color; // Color code of the header
-	private String border = "#FFFFFF"; // The outter border of the box
+	private String border = "#FFFFFF"; // The outer border of the box
 	private TranscriptLinkData tData = null;
 	private boolean selected = false, autogrow = false;
 
@@ -1120,11 +1120,13 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 	public void select() {
 		this.selected = true;
 		this.setHighlight(true);
+		this.setBorder("highlighted");
 	}
 	
 	public void deselect() {
 		this.selected = false;
 		this.setHighlight(false);
+		this.setBorder("standard");
 	}
 
 	/**
@@ -1326,7 +1328,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 				GrammarNode clickedNode = null;
 				
 				for (GrammarNode node : nodes) {
-					if (node.abstractBoxInNode(AbstractBox.this)) {
+					if (node.abstractBoxIsFormFunction(AbstractBox.this)) {
 						nodeSelected = true;
 						clickedNode = node;
 					}
@@ -1344,16 +1346,20 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 					}
 					
 					for (AbstractBox abox : aboxes) {
-						if (clickedNode.abstractBoxInNode(abox) || clickedNode.abstractWordInNode(abox)) {
+						if (clickedNode.containsAbstractBox(abox)) {
 							nodeBoxes.add(abox);
 						}
 					}
 					
 					if (AbstractBox.this.selected) {
+						clickedNode.setSelected(false);
+						
 						for (AbstractBox box : nodeBoxes) {
 							box.deselect();
 						}
 					} else {
+						clickedNode.setSelected(true);
+						
 						for (AbstractBox box : nodeBoxes) {
 							box.select();
 						}
