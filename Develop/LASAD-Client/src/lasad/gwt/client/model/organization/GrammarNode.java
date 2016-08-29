@@ -115,6 +115,22 @@ public class GrammarNode {
 		this.selected = selected;
 	}
 	
+	public void addSubNode(GrammarNode node) {
+		this.subNodes.add(node);
+	}
+	
+	public void removeSubNode(GrammarNode node) {
+		this.subNodes.remove(node);
+	}
+	
+	public void addWord(LinkedBox word) {
+		this.words.add(word);
+	}
+	
+	public void removeWord(LinkedBox word) {
+		this.words.remove(word);
+	}
+	
 	public Vector<Integer> getAllBoxIDs() {
 		Vector<Integer> ids = new Vector<Integer>();
 		
@@ -212,6 +228,18 @@ public class GrammarNode {
 		}
 		
 		return allWords;
+	}
+	
+	public GrammarNode getSuperNode() {
+		GrammarNode superNode = null;
+		
+		for (GrammarNode compare : map.getArgModel().getNodes()) {
+			if (compare.nodeInNode(this)) {
+				superNode = compare;
+			}
+		}
+		
+		return superNode;
 	}
 
 }

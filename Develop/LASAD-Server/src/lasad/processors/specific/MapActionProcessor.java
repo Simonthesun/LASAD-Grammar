@@ -718,7 +718,14 @@ public class MapActionProcessor extends AbstractActionObserver implements Action
 		a.addParameter(ParameterTypes.Received, System.currentTimeMillis() + "");
 
 		int mapID = ActionProcessor.getMapIDFromAction(a);
-		int elementID = Integer.parseInt(a.getParameterValue(ParameterTypes.Id));
+		String elementIDString = a.getParameterValue(ParameterTypes.Id);
+		int elementID;
+
+		if (elementIDString.equalsIgnoreCase("LAST-ID")) {
+			elementID = myServer.currentState.lastTopLevelElementID;
+		} else {
+			elementID = Integer.parseInt(elementIDString);
+		}
 
 		synchronized (ActionProcessor.DeleteUpdateJoinActionLock) {
 

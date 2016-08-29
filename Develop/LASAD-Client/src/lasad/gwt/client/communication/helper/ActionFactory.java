@@ -718,6 +718,34 @@ public class ActionFactory {
 		
 		return p;
 	}
+	
+	// specifically for creating an inserted form. Circumvents some server-client communication trickery.
+	public ActionPackage createFormInsert(ElementInfo boxInfo, ElementInfo linkInfo, String mapID, int x, int y, Vector<String> ids, String superID) {
+		ActionPackage p = new ActionPackage();
+		
+		Action box = createBox(boxInfo, mapID, x, y);
+		p.addAction(box);
+
+		Vector<Action> boxelements = createBoxElementsAction(boxInfo, mapID);
+		if (boxelements.size() > 0) {
+			for (Action c : boxelements) {
+				p.addAction(c);
+			}
+		}
+
+		ids.add(superID);
+		Action links = createLinkSet(linkInfo, mapID, "LAST-ID", ids);
+		p.addAction(links);
+		
+		Action a = new Action(Commands.UpdateElement, Categories.Map);
+//		Action a = new Action("UPDATE-ELEMENT", "MAP");
+		a.addParameter(ParameterTypes.MapId, mapID);
+		a.addParameter(ParameterTypes.Id, "LAST-ID");
+		a.addParameter(ParameterTypes.Direction, "changed");
+		p.addAction(a);
+		
+		return p;
+	}
 
 	public ActionPackage sendChatMessage(String mapID, String msg) {
 		ActionPackage p = new ActionPackage();

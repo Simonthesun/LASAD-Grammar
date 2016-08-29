@@ -1128,6 +1128,16 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 		this.setHighlight(false);
 		this.setBorder("standard");
 	}
+	
+	public void visualSelect() { 
+		this.setHighlight(true);
+		this.setBorder("highlighted");
+	}
+	
+	public void visualDeselect() {
+		this.setHighlight(false);
+		this.setBorder("standard");
+	}
 
 	/**
 	 * Changes the box border to a predefined class or a passed #color
@@ -1346,7 +1356,7 @@ public abstract class AbstractBox extends LASADBoxComponent implements MVCViewRe
 					}
 					
 					for (AbstractBox abox : aboxes) {
-						if (clickedNode.containsAbstractBox(abox)) {
+						if (clickedNode.abstractBoxIsFormFunction(abox)) {
 							nodeBoxes.add(abox);
 						}
 					}

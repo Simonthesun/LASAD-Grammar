@@ -720,6 +720,9 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 		MenuItem createNodeItem = createCreateNodeItem();
 		menu.add(createNodeItem);
 
+		MenuItem deleteNodeItem = createDeleteNodeItem();
+		menu.add(deleteNodeItem);
+
 		MenuItem fontSizeItem = createFontSizeItem();
 		menu.add(fontSizeItem);
 
@@ -1030,7 +1033,7 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 	protected MenuItem createRunOrganizer()
 	{
 		final MenuItem runOrganizer = new MenuItem("Organize Map");
-		runOrganizer.addSelectionListener(new SelectionListener<MenuEvent>()
+		runOrganizer.addSelectionListener(new SelectionListener<MenuEvent>() 
 		{
 			@Override
 			public void componentSelected(MenuEvent ce)
@@ -1084,5 +1087,19 @@ public class ArgumentMapMenuBar extends GraphMapMenuBar {
 			}
 		});
 		return createNode;
+	}
+
+	protected MenuItem createDeleteNodeItem() {
+		final MenuItem deleteNode = new MenuItem("Delete Node");
+		deleteNode.addSelectionListener(new SelectionListener<MenuEvent>() {
+			@Override
+			public void componentSelected(MenuEvent ce)
+			{
+				NodeCreator creator = ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getNodeCreator();
+				ArgumentMapMenuBar.this.getMyMapSpace().getMyMap().getFocusHandler().releaseAllFocus();
+				creator.deleteNodes();
+			}
+		});
+		return deleteNode;
 	}
 }

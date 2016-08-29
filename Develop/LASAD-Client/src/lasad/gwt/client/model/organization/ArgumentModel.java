@@ -1,5 +1,6 @@
 package lasad.gwt.client.model.organization;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class ArgumentModel
 {
 	private Set<ArgumentThread> argThreads;
 	private Vector<GrammarNode> nodes;
+	private HashMap<LinkedBox, Integer> links;
 	private int fontSize = 10;
 	private MVController controller;
 //	private boolean updated;
@@ -37,6 +39,7 @@ public class ArgumentModel
 	{
 		this.argThreads = new HashSet<ArgumentThread>();
 		this.nodes = new Vector<GrammarNode>();
+		this.links = new HashMap<LinkedBox, Integer>();
 		controller = LASAD_Client.getMVCController(mapID);
 //		this.updated = false;
 	}
@@ -343,6 +346,22 @@ public class ArgumentModel
 		}
 		buffer.append("\n***********\nEND OF MODEL\n***********\n");
 		return buffer.toString();
+	}
+	
+	public HashMap<LinkedBox, Integer> getLinkData() {
+		return links;
+	}
+	
+	public void addLinkData(int id, LinkedBox end) {
+		links.put(end, id);
+	}
+	
+	public void removeLinkData(LinkedBox end) {
+		links.remove(end);
+	}
+	
+	public int getLinkIDByEndBox(LinkedBox end) {
+		return links.get(end);
 	}
 	
 /*	public boolean getUpdated() {

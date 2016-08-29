@@ -637,8 +637,6 @@ public class LASADActionReceiver {
 
 					//argModel.setUpdate(true);
 					
-					Logger.log("TEST???", Logger.DEBUG);
-					
 					if (elementSubType.equals("Refutation")) {
 						argModel.getNodes().get(argModel.getNodes().size() - 1).setFunction(box);
 						Logger.log("ACTION RECEIVER: Function created", Logger.DEBUG);
@@ -711,6 +709,7 @@ public class LASADActionReceiver {
 						}
 					}
 
+					argModel.addLinkData(elementID, endBox);
 					//argModel.setUpdate(true);
 				}
 
@@ -1062,7 +1061,6 @@ public class LASADActionReceiver {
 					//Added by DSF, run setFontSize so new boxes get the right font size
 					argModel.setFontSize(argModel.getFontSize(), false);
 					
-					//HERE WAS WHERE IT WAS
 				}
 
 				// If it's a relation, add it to the model

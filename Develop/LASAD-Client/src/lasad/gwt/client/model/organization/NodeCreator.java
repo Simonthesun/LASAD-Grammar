@@ -52,11 +52,11 @@ public class NodeCreator {
 		
 		startCreateNode(mapInfo, words, nodes);
 		
-		deselectAllBoxes(map);
+		deselectAll(map);
 	}
 	
 	private void startCreateNode(GraphMapInfo mapInfo, Vector<LinkedBox> words, Vector<GrammarNode> nodes) {
-		if (checkAdjacent(words, nodes)) {
+/*		if (checkAdjacent(words, nodes)) {
 			boolean sameNode = true;
 			GrammarNode division = null;
 			
@@ -91,11 +91,13 @@ public class NodeCreator {
 			words.removeAll(getDividedWords(nodes, words));
 			nodes.removeAll(getDividedNodes(nodes, words));
 			startCreateNode(mapInfo, words, nodes);
-		}
+		}*/
+		
+		runCreateNodeAlgorithm(mapInfo, words, nodes);
 	}
 	
 	private void runCreateNodeAlgorithm(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords, Vector<GrammarNode> selectedNodes) {
-		Vector<LinkedBox> wordsInSelection = selectedWords;
+//		Vector<LinkedBox> wordsInSelection = selectedWords;
 		
 /*		for (GrammarNode node : selectedNodes) {
 			Vector<LinkedBox> wordsInNode = node.getWords();
@@ -107,12 +109,49 @@ public class NodeCreator {
 			}
 		}
 */		
+		boolean inNode = false;
 		GrammarNode node = new GrammarNode(map.getMyArgumentMapSpace(), selectedWords, selectedNodes);
-		argModel.addNode(node);
+		Map<String, ElementInfo> links = mapInfo.getElementsByType("relation");
+		ElementInfo link = links.get("Instructor-Pointer");
 		
 		if (selectedNodes.isEmpty()) {
-			createForm(mapInfo, selectedWords, true);
+			GrammarNode superNode = null;
+			Vector<GrammarNode> nodes = argModel.getNodes();
+			
+			for (GrammarNode test : nodes) {
+				if (test.wordInNode(selectedWords.firstElement())) {
+					inNode = true;
+					superNode = test;
+				}
+			}
+			
+			if (inNode) {
+				moveNodeBoxesForInsert(superNode);
+				
+				for (LinkedBox word : superNode.getWords()) {
+					deleteLinkToBox(word);
+				}
+				
+				for (LinkedBox word : selectedWords) {
+					superNode.removeWord(word);
+				}
+				
+				Vector<LinkedBox> unselected = superNode.getWords();
+				unselected.removeAll(selectedWords);
+				
+				for (LinkedBox word : unselected) {
+					communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(superNode.getForm().getBoxID()), Integer.toString(word.getBoxID())));
+				}
+				
+				superNode.addSubNode(node);
+				
+				createForm(mapInfo, selectedWords, true, true, node);
+			} else {
+				createForm(mapInfo, selectedWords, true, false, node);
+			}
+			
 			createFunction(mapInfo, selectedWords);
+			
 		} else {
 			Vector<LinkedBox> nodeForms = new Vector<LinkedBox>();
 			Vector<LinkedBox> nodeFunctions = new Vector<LinkedBox>();
@@ -127,33 +166,64 @@ public class NodeCreator {
 				nodeFunctions.add(selectedWord);
 			}
 			
-			createForm(mapInfo, nodeForms, false);
+			if (selectedNodes.firstElement().getSuperNode() != null) {
+				GrammarNode superNode = selectedNodes.firstElement().getSuperNode();
+				
+				moveNodeBoxesForInsert(superNode);
+				
+				for (LinkedBox box : nodeForms) {
+					deleteLinkToBox(box);
+				}
+				
+				for (GrammarNode selectedNode : selectedNodes) {
+					superNode.removeSubNode(selectedNode);
+					deleteLinkToBox(selectedNode.getForm());
+				}
+				
+				for (LinkedBox selectedWord : selectedWords) {
+					superNode.removeWord(selectedWord);
+					deleteLinkToBox(selectedWord);
+				}
+				
+				superNode.addSubNode(node);
+				
+				createForm(mapInfo, nodeForms, false, true, node);
+			} else {
+				createForm(mapInfo, nodeForms, false, false, node);
+			}
+			
 			createFunction(mapInfo, nodeFunctions);
 		}
 		
+		argModel.addNode(node);
+		
 	}
 
-	public void createForm(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords, boolean span) {
+	public void createForm(GraphMapInfo mapInfo, Vector<LinkedBox> selectedWords, boolean span, boolean insert, GrammarNode node) {
 		Map<String, ElementInfo> boxes = mapInfo.getElementsByType("box");
 		ElementInfo form = boxes.get("Conclusion");
 		Map<String, ElementInfo> links = mapInfo.getElementsByType("relation");
-		ElementInfo link = links.get("Support");
+		ElementInfo link = links.get("Instructor-Pointer");
+		
+		Vector<String> elements = new Vector<String>();
 		
 		if (span) {
-			Vector<String> firstlast = new Vector<String>();
-			firstlast.add(Integer.toString(selectedWords.get(0).getBoxID()));
+			elements.add(Integer.toString(selectedWords.firstElement().getBoxID()));
 			if (selectedWords.size() > 1) {
-				firstlast.add(Integer.toString(selectedWords.get(selectedWords.size() - 1).getBoxID()));
+				elements.add(Integer.toString(selectedWords.lastElement().getBoxID()));
 			}
 			
-			communicator.sendActionPackage(actionBuilder.createBoxAndLinks(form, link, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true), firstlast));
 		} else {
-			Vector<String> elements = new Vector<String>();
 			
 			for (LinkedBox box : selectedWords) {
 				elements.add(Integer.toString(box.getBoxID()));
 			}
 			
+		}
+		
+		if (insert) {
+			communicator.sendActionPackage(actionBuilder.createFormInsert(form, link, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true), elements, Integer.toString(node.getSuperNode().getForm().getBoxID())));
+		} else {
 			communicator.sendActionPackage(actionBuilder.createBoxAndLinks(form, link, mapInfo.getMapID(), calculateX(selectedWords), calculateY(selectedWords, true), elements));
 		}
 		
@@ -170,7 +240,13 @@ public class NodeCreator {
 	
 	public int calculateX(Vector<LinkedBox> selectedWords) {
 		double avg = (selectedWords.firstElement().getXLeft() + selectedWords.get(selectedWords.size() - 1).getXLeft() + selectedWords.get(selectedWords.size() - 1).getWidth()) / 2;
-		double xleft = avg - 100;
+		double xleft;
+		
+		if (selectedWords.size() == 1) {
+			xleft = selectedWords.firstElement().getXLeft();
+		} else {
+			xleft = avg - 150;
+		}
 		
 		return (int) xleft;
 	}
@@ -181,9 +257,21 @@ public class NodeCreator {
 		double y;
 		
 		if (form) {
-			y = wordY - (1.5 * selectedWords.firstElement().getHeight());
+			for (LinkedBox box : selectedWords) {
+				if (box.getYTop() < wordY) {
+					wordY = box.getYTop();
+				}
+			}
+			
+			y = wordY - (1.0 * selectedWords.firstElement().getHeight());
 		} else {
-			y = wordY + (1.5 * selectedWords.firstElement().getHeight());
+			for (LinkedBox box : selectedWords) {
+				if (box.getYTop() > wordY) {
+					wordY = box.getYTop();
+				}
+			}
+			
+			y = wordY + (1.0 * selectedWords.firstElement().getHeight());
 		}
 		
 		return (int) y;
@@ -308,7 +396,7 @@ public class NodeCreator {
 		return allSelected;
 	}
 	
-	public void deselectAllBoxes(AbstractGraphMap map) {
+	public void deselectAll(AbstractGraphMap map) {
 		Vector<AbstractBox> aboxes = new Vector<AbstractBox>();
 		List<Component> mapComponents = map.getItems();
 		
@@ -320,6 +408,10 @@ public class NodeCreator {
 		
 		for (AbstractBox abox : aboxes) {
 			abox.deselect();
+		}
+		
+		for (GrammarNode node : map.getArgModel().getNodes()) {
+			node.setSelected(false);
 		}
 	}
 	
@@ -481,5 +573,136 @@ public class NodeCreator {
 		}
 		
 		return top;
+	}
+	
+	public void deleteLinkToBox(LinkedBox end) {
+		if (argModel.getLinkData().containsKey(end)) {
+			communicator.sendActionPackage(actionBuilder.removeElement(mapInfo.getMapID(), argModel.getLinkIDByEndBox(end)));
+			argModel.removeLinkData(end);
+		}
+	}
+	
+	public void moveNodeBoxesForInsert(GrammarNode base) {
+		if (base.getSuperNode() == null) {
+			communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), base.getForm().getBoxID(), (int) base.getForm().getXLeft(), (int) (base.getForm().getYTop() - base.getForm().getHeight())));
+			communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), base.getFunction().getBoxID(), (int) base.getFunction().getXLeft(), (int) (base.getFunction().getYTop() + base.getFunction().getHeight())));
+		} else if (base.getSuperNode().getSubNodes().size() == 1) {
+			moveNodeBoxesForInsert(base.getSuperNode());
+		} /*else {
+			for (GrammarNode subNode : base.getSuperNode().getSubNodes()) {
+				if (subNode != base) {
+					communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), subNode.getForm().getBoxID(), (int) subNode.getForm().getXLeft(), (int) (subNode.getForm().getYTop() - subNode.getForm().getHeight())));
+					communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), subNode.getFunction().getBoxID(), (int) subNode.getFunction().getXLeft(), (int) (subNode.getFunction().getYTop() + subNode.getFunction().getHeight())));
+				}
+			}
+			
+			moveNodeBoxesForInsert(base.getSuperNode());
+		}*/
+	}
+	
+	public void moveNodeBoxesForDelete(GrammarNode base) {
+		if (base.getSuperNode() == null) {
+			communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), base.getForm().getBoxID(), (int) base.getForm().getXLeft(), (int) (base.getForm().getYTop() + base.getForm().getHeight())));
+			communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), base.getFunction().getBoxID(), (int) base.getFunction().getXLeft(), (int) (base.getFunction().getYTop() - base.getFunction().getHeight())));
+		} else if (base.getSuperNode().getSubNodes().size() == 1) {
+			moveNodeBoxesForDelete(base.getSuperNode());
+		} /*else {
+			for (GrammarNode subNode : base.getSuperNode().getSubNodes()) {
+				if (subNode != base) {
+					communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), subNode.getForm().getBoxID(), (int) subNode.getForm().getXLeft(), (int) (subNode.getForm().getYTop() + subNode.getForm().getHeight())));
+					communicator.sendActionPackage(actionBuilder.updateBoxPosition(mapInfo.getMapID(), subNode.getFunction().getBoxID(), (int) subNode.getFunction().getXLeft(), (int) (subNode.getFunction().getYTop() - subNode.getFunction().getHeight())));
+				}
+			}
+			
+			moveNodeBoxesForDelete(base.getSuperNode());
+		}*/
+	}
+	
+	public void deleteNodes() {
+
+		Vector<GrammarNode> nodes = getSelectedNodes(map);
+		
+		for (GrammarNode node : nodes) {
+			startDeleteNode(mapInfo, node);
+		}
+		
+		deselectAll(map);
+	}
+	
+	private void startDeleteNode(GraphMapInfo mapInfo, GrammarNode node) { 
+		Vector<GrammarNode> subNodes = node.getSubNodes();
+		Vector<LinkedBox> subWords = node.getWords();
+		GrammarNode superNode = node.getSuperNode();
+		Map<String, ElementInfo> links = mapInfo.getElementsByType("relation");
+		ElementInfo link = links.get("Instructor-Pointer");
+		//boolean hasSubNode = false;
+		
+		if (superNode == null) {
+			/*for (GrammarNode subNode : subNodes) {
+				deleteLinkToBox(subNode.getForm());
+			}
+			
+			for (LinkedBox word : subWords) {
+				deleteLinkToBox(word);
+			}*/
+			
+			communicator.sendActionPackage(actionBuilder.removeElement(mapInfo.getMapID(), node.getForm().getBoxID()));
+			communicator.sendActionPackage(actionBuilder.removeElement(mapInfo.getMapID(), node.getFunction().getBoxID()));
+			
+			argModel.removeNode(node);
+		} else {
+			for (GrammarNode subNode : subNodes) {
+				//deleteLinkToBox(subNode.getForm());
+				
+				superNode.addSubNode(subNode);
+				//hasSubNode = true;
+				communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(superNode.getForm().getBoxID()), Integer.toString(subNode.getForm().getBoxID())));				
+			}
+			
+			for (LinkedBox word : subWords) {
+				//deleteLinkToBox(word);
+				
+				superNode.addWord(word);
+				
+				//if (hasSubNode) {
+					communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(superNode.getForm().getBoxID()), Integer.toString(word.getBoxID())));
+				//}
+			}
+			
+			communicator.sendActionPackage(actionBuilder.removeElement(mapInfo.getMapID(), node.getForm().getBoxID()));
+			communicator.sendActionPackage(actionBuilder.removeElement(mapInfo.getMapID(), node.getFunction().getBoxID()));
+			
+			//for re-drawing the links if it requires a "span" rather than a link to each element, but buggy
+			/*if (!hasSubNode) {
+				int least = superNode.getWords().firstElement().getRootID();
+				int greatest = superNode.getWords().firstElement().getRootID();
+				
+				for (LinkedBox word : superNode.getWords()) {
+					deleteLinkToBox(word);
+					
+					if (word.getRootID() < least) {
+						least = word.getRootID();
+					} else if (word.getRootID() > greatest) {
+						greatest = word.getRootID();
+					}
+					
+				}
+				
+				communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(superNode.getForm().getBoxID()), Integer.toString(least)));
+				
+				if (superNode.getWords().size() > 1) {
+					communicator.sendActionPackage(actionBuilder.createLinkWithElements(link, mapInfo.getMapID(), Integer.toString(superNode.getForm().getBoxID()), Integer.toString(greatest)));
+				}
+			}*/
+			
+			superNode.removeSubNode(node);
+			argModel.removeNode(node);
+			
+			if (superNode != null) {
+				if (superNode.getSubNodes().size() > 0) {
+					moveNodeBoxesForDelete(superNode);
+				}
+			}
+		}
 	}
 }
